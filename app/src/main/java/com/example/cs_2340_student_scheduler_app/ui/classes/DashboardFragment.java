@@ -1,4 +1,4 @@
-package com.example.cs_2340_student_scheduler_app.ui.dashboard;
+package com.example.cs_2340_student_scheduler_app.ui.classes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
