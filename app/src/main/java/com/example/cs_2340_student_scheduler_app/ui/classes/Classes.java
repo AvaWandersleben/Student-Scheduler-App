@@ -46,6 +46,14 @@ public class Classes {
     //returns time as a formatted string
     public String getTimeString() {
         String postMark = (time > 1200 ? "pm" : "am");
-        return time / 100 + ":" + time % 100 + postMark;
+        return (time / 100) % 12 + ":" + time % 100 + postMark;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || o.getClass() != getClass()) return false;
+        Classes other = (Classes) o;
+        return other.courseName.equals(courseName) && other.time == time && other.instructor.equals(instructor);
     }
 }

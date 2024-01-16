@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class DashboardFragment extends Fragment {
     private LinearLayoutCompat cards;
     private FloatingActionButton buttonAdd;
+    private FloatingActionButton buttonDelete;
     private ArrayList<Classes> classList = new ArrayList<>();
 
 
@@ -39,6 +41,7 @@ public class DashboardFragment extends Fragment {
 
 
         buttonAdd = root.findViewById(R.id.butAd);
+        buttonDelete = root.findViewById(R.id.deleteBut);
         RecyclerView courseCards =root.findViewById(R.id.idClass);
 
         // Here, we have created new array list and added data to it
@@ -50,6 +53,18 @@ public class DashboardFragment extends Fragment {
 
         courseCards.setLayoutManager(linearLayoutManager);
         courseCards.setAdapter(classAdapter);
+
+//        buttonDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                TextView classText = root.findViewById(R.id.className);
+////                TextView timeText = root.findViewById(R.id.timeText);
+////                TextView instructor = root.findViewById(R.id.instructName);
+//
+//                //classList.remove(new Classes(classText.getText().toString(), Integer.parseInt(timeText.getText().toString()), instructor.getText().toString()));
+//            }
+//        });
+
         buttonAdd.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -68,8 +83,8 @@ public class DashboardFragment extends Fragment {
 ////                newCard.setTag(); //
 //
 //                cards.addView(newCard);
-                classList.add(new Classes("Science", 740, "Mr Science"));
-                courseCards.setAdapter(classAdapter);
+                classList.add(new Classes("Science", 2340, "Mr Science"));
+                classAdapter.notifyItemInserted(classList.size() - 1);
             }
         });
         //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
