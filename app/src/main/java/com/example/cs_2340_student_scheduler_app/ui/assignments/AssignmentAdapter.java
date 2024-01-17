@@ -1,4 +1,4 @@
-package com.example.cs_2340_student_scheduler_app.ui.classes;
+package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -16,6 +16,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
+import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,70 +26,70 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
+public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.ViewHolder>{
     private final Context context;
-    private ArrayList<Classes> classList;
+    private ArrayList<Assignment> assignmentList;
     private Fragment from;
 
     private ArrayList<Integer> index;
 
-    public ClassAdapter(Context context, ArrayList<Classes> classList, Fragment from, ArrayList<Integer> index) {
+    public AssignmentAdapter(Context context, ArrayList<Assignment> assignmentList, Fragment from, ArrayList<Integer> index) {
         this.index = index;
         this.from = from;
         this.context = context;
-        this.classList = classList;
+        this.assignmentList = assignmentList;
     }
 
     @NonNull
     @Override
-    public ClassAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_card, parent, false);
+    public AssignmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.assignment_card, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
-        Classes model = classList.get(position);
-        holder.className.setText(model.getCourseName());
-        holder.timeText.setText(model.getTime());
-        holder.instruct.setText(model.getInstructor());
+    public void onBindViewHolder(@NonNull AssignmentAdapter.ViewHolder holder, int position) {
+        Assignment model = assignmentList.get(position);
+        holder.title.setText(model.getTitle());
+        holder.dueDate.setText(model.getDueDate());
+        holder.associatedClass.setText(model.getClassName());
     }
 
     @Override
     public int getItemCount() {
-        return classList.size();
+        return assignmentList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView className;
-        private final TextView timeText;
-        private final TextView instruct;
+        private final TextView title;
+        private final TextView dueDate;
+        private final TextView associatedClass;
 
         private FloatingActionButton deleteButt;
         private Button editButt;
-        private ClassAdapter adapter;
+        private AssignmentAdapter adapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            className = itemView.findViewById(R.id.className);
-            timeText = itemView.findViewById(R.id.timeText);
-            instruct = itemView.findViewById(R.id.instructName);
+            title = itemView.findViewById(R.id.assignTitle);
+            dueDate = itemView.findViewById(R.id.dueDate);
+            associatedClass = itemView.findViewById(R.id.associatedClass);
             deleteButt = itemView.findViewById(R.id.deleteBut);
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
-                adapter.classList.remove(getAdapterPosition());
+                adapter.assignmentList.remove(getAdapterPosition());
                 adapter.saveData();
                 adapter.notifyItemRemoved(getAdapterPosition());
             });
 
             editButt.setOnClickListener(view -> {
                 adapter.index.set(0, getAdapterPosition());
-                NavHostFragment.findNavController(adapter.from).navigate(R.id.action_navigation_dashboard_to_navigation_addClass);
+                NavHostFragment.findNavController(adapter.from).navigate(R.id.action_navigation_notifications_to_navigation_assignment_menu_fragment);
             });
         }
 
-        public ViewHolder linkAdapter(ClassAdapter adapter) {
+        public ViewHolder linkAdapter(AssignmentAdapter adapter) {
             this.adapter = adapter;
             return this;
         }
@@ -103,21 +106,21 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
         // below line is to get to string present from our
         // shared prefs if not present setting it as null.
-        String json = sharedPreferences.getString("courses", null);
+        String json = sharedPreferences.getString("assignments", null);
 
         // below line is to get the type of our array list.
-        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
 
         // in below line we are getting data from gson
         // and saving it to our array list
-        classList = gson.fromJson(json, type);
-        System.out.println(classList.size());
+        assignmentList = gson.fromJson(json, type);
+        System.out.println(assignmentList.size());
 
         // checking below if the array list is empty or not
-        if (classList == null) {
+        if (assignmentList == null) {
             // if the array list is empty
             // creating a new array list.
-            classList = new ArrayList<>();
+            assignmentList = new ArrayList<>();
         }
     }
 
@@ -135,18 +138,15 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         Gson gson = new Gson();
 
         // getting data from gson and storing it in a string.
-        String json = gson.toJson(classList);
+        String json = gson.toJson(assignmentList);
 
         // below line is to save data in shared
         // prefs in the form of string.
-        editor.putString("courses", json);
+        editor.putString("assignments", json);
 
         // below line is to apply changes
         // and save data in shared prefs.
         editor.apply();
-        System.out.println(classList.size());
-
-        // after saving data we are displaying a toast message.
-        //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
+        System.out.println(assignmentList.size());
     }
 }

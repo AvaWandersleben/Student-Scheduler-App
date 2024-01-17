@@ -1,4 +1,4 @@
-package com.example.cs_2340_student_scheduler_app.ui.notifications;
+package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
