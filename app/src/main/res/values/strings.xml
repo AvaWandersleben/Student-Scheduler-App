@@ -3,4 +3,14 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="class1"></string>
+    <string name="time1">Time: 2:30 pm</string>
+    <string name="instructor1">Instructor: Mr. Example</string>
+    <string name="butAddText">Add Class</string>
+    <string name="editButton">Edit</string>
+    <string name="submitButtClass">Submit</string>
+    <string name="instructName">Instructor Name</string>
+    <string name="classTime">Class Time:</string>
+    <string name="className">Class Name:</string>
+    <string name="editTextName"></string>
 </resources>
