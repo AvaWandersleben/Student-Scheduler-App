@@ -15,11 +15,35 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.cs_2340_student_scheduler_app.ui.classes.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_addClass"
+            app:destination="@id/navigation_addClass" />
+        <argument
+            android:name="className"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="time"
+            app:argType="string" />
+        <argument
+            android:name="instructName"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.cs_2340_student_scheduler_app.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_addClass"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.MenuFragment"
+        android:label="Menu"
+        tools:layout="@layout/new_class_menu" >
+        <action
+            android:id="@+id/action_navigation_addClass_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
 </navigation>

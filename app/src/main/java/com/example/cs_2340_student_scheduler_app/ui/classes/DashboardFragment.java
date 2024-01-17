@@ -10,6 +10,8 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs_2340_student_scheduler_app.R;
@@ -18,6 +20,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import java.util.ArrayList;
+
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,8 +50,8 @@ public class DashboardFragment extends Fragment {
         RecyclerView courseCards =root.findViewById(R.id.idClass);
 
         // Here, we have created new array list and added data to it
-        classList.add(new Classes("Math", 230, "Mr Math"));
-        classList.add(new Classes("Science", 740, "Mr Science"));
+//        classList.add(new Classes("Math", "230", "Mr Math"));
+//        classList.add(new Classes("Science", "740", "Mr Science"));
 
         ClassAdapter classAdapter = new ClassAdapter(getContext(), classList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -65,26 +70,49 @@ public class DashboardFragment extends Fragment {
 //            }
 //        });
 
+
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("course").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.add(new Classes(o.toString(), "default", "default"));
+                classAdapter.notifyItemInserted(classList.size() - 1);
+            }
+        });
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("time").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.set(classList.size() - 1, classList.get(classList.size() - 1)).setTime(o.toString());
+                classAdapter.notifyItemChanged(classList.size() - 1);
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("instructor").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.set(classList.size() - 1, classList.get(classList.size() - 1)).setInstructor(o.toString());
+                classAdapter.notifyItemChanged(classList.size() - 1);
+            }
+        });
         buttonAdd.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-//                CardView newCard = new CardView(getContext());
-//                getLayoutInflater().inflate(R.layout.class_card, newCard);
-//
-//                TextView className = newCard.findViewById(R.id.className);
-//                TextView time = newCard.findViewById(R.id.timeText);
-//                TextView instructor = newCard.findViewById(R.id.instructName);
-//
-//
-//                className.setText("Class Name");
-//                time.setText("Time");
-//                instructor.setText("Instruct");
-////                newCard.setTag(); //
-//
-//                cards.addView(newCard);
-                classList.add(new Classes("Science", 2340, "Mr Science"));
-                classAdapter.notifyItemInserted(classList.size() - 1);
+                NavHostFragment.findNavController(DashboardFragment.this).navigate(R.id.action_navigation_dashboard_to_navigation_addClass);
+                //String className = DashboardFragmentArgs.fromBundle(getArguments()).getClassName();
+//                String instructName = DashboardFragmentArgs.fromBundle(getArguments()).getInstructName();
+//                String timeText = DashboardFragmentArgs.fromBundle(getArguments()).getTime();
+//                String className = "hi";
+//                String timeText = "5:20";
+//                String instructName = "Mr. Bob";
+//                classList.add(new Classes(className, timeText, instructName));
+//                classAdapter.notifyItemInserted(classList.size() - 1);
             }
         });
         //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);

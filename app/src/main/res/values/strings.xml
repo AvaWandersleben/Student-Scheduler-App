@@ -7,4 +7,10 @@
     <string name="time1">Time: 2:30 pm</string>
     <string name="instructor1">Instructor: Mr. Example</string>
     <string name="butAddText">Add Class</string>
+    <string name="editButton">Edit</string>
+    <string name="submitButtClass">Submit</string>
+    <string name="instructName">Instructor Name</string>
+    <string name="classTime">Class Time:</string>
+    <string name="className">Class Name:</string>
+    <string name="editTextName">Name</string>
 </resources>

@@ -9,17 +9,17 @@ public class Classes {
     - 1230 = 12:30
     - 2314 = 23:14 = 11:14
      */
-    private int time;
+    private String time;
 
     private String instructor;
 
-    public Classes(String courseName, int time, String instructor) {
+    public Classes(String courseName, String time, String instructor) {
         this.courseName = courseName;
         this.time = time;
         this.instructor = instructor;
     }
 
-    public int getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -39,15 +39,15 @@ public class Classes {
         this.instructor = instructor;
     }
 
-    public void setTime(int time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
     //returns time as a formatted string
-    public String getTimeString() {
-        String postMark = (time > 1200 ? "pm" : "am");
-        return (time / 100) % 12 + ":" + time % 100 + postMark;
-    }
+//    public String getTimeString() {
+//        String postMark = (time > 1200 ? "pm" : "am");
+//        return (time / 100) % 12 + ":" + time % 100 + postMark;
+//    }
 
     @Override
     public boolean equals(Object o) {

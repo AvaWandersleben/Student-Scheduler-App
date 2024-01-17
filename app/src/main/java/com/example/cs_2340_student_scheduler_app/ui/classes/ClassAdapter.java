@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,7 +38,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         // to set data to textview and imageview of each card layout
         Classes model = classList.get(position);
         holder.className.setText(model.getCourseName());
-        holder.timeText.setText(model.getTimeString());
+        holder.timeText.setText(model.getTime());
         holder.instruct.setText(model.getInstructor());
     }
 
@@ -54,6 +55,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         private final TextView instruct;
 
         private FloatingActionButton deleteButt;
+        private Button editButt;
         private ClassAdapter adapter;
 
         public ViewHolder(@NonNull View itemView) {
@@ -62,10 +64,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             timeText = itemView.findViewById(R.id.timeText);
             instruct = itemView.findViewById(R.id.instructName);
             deleteButt = itemView.findViewById(R.id.deleteBut);
+            editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
                 adapter.classList.remove(getAdapterPosition());
                 adapter.notifyItemRemoved(getAdapterPosition());
+            });
+
+            editButt.setOnClickListener(view -> {
+                adapter.classList.get(getAdapterPosition()).setCourseName("Edited");
+                adapter.notifyItemChanged(getAdapterPosition());
             });
         }
 

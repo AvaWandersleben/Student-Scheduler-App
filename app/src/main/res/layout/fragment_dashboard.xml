@@ -8,103 +8,105 @@
     app:contentInsetStart="0dp"
     app:contentInsetEnd="0dp"
     android:padding="16dp">
+
     <RelativeLayout
-        android:layout_weight="10"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:ignore="MissingConstraints">
-
-
-<!--    <Button-->
-<!--        android:id="@+id/butAdd"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:text="@string/butAddText"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <ScrollView
-        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        android:layout_weight="10"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
 
-<!--        <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--            android:id="@+id/cards"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical"-->
-<!--            tools:ignore="MissingConstraints">-->
 
-<!--            <include-->
-<!--                android:id="@+id/includedLayoutFirst"-->
-<!--                layout="@layout/class_card" />-->
-
-<!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MainActivity">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/idClass"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-        <!--    <androidx.cardview.widget.CardView-->
+        <!--    <Button-->
+        <!--        android:id="@+id/butAdd"-->
         <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--        android:layout_height="0dp"-->
+        <!--        android:text="@string/butAddText"-->
         <!--        app:layout_constraintEnd_toEndOf="parent"-->
         <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toTopOf="parent">-->
+        <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--            android:padding="4dp"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent">-->
+        <ScrollView
+            android:id="@+id/scrollView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/className"-->
-        <!--                style="@style/TextAppearance.MaterialComponents.Headline3"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:text="@string/class1"-->
-        <!--                tools:ignore="MissingConstraints" />-->
+            <!--        <androidx.appcompat.widget.LinearLayoutCompat-->
+            <!--            android:id="@+id/cards"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:orientation="vertical"-->
+            <!--            tools:ignore="MissingConstraints">-->
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/title"-->
-        <!--                style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginTop="4dp"-->
-        <!--                android:text="@string/time1"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                app:layout_constraintTop_toBottomOf="@id/className" />-->
+            <!--            <include-->
+            <!--                android:id="@+id/includedLayoutFirst"-->
+            <!--                layout="@layout/class_card" />-->
 
-        <!--            <TextView-->
-        <!--                android:id="@+id/subhead"-->
-        <!--                style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginTop="4dp"-->
-        <!--                android:text="@string/instructor1"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                app:layout_constraintTop_toBottomOf="@id/title" />-->
+            <!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity">
 
-        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-        <!--    </androidx.cardview.widget.CardView>-->
-    </ScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/idClass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <!--    <androidx.cardview.widget.CardView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--        app:layout_constraintStart_toStartOf="parent"-->
+            <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+            <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--            android:padding="4dp"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="match_parent">-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/className"-->
+            <!--                style="@style/TextAppearance.MaterialComponents.Headline3"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/class1"-->
+            <!--                tools:ignore="MissingConstraints" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/title"-->
+            <!--                style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="4dp"-->
+            <!--                android:text="@string/time1"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/className" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/subhead"-->
+            <!--                style="@style/TextAppearance.MaterialComponents.Subtitle1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="4dp"-->
+            <!--                android:text="@string/instructor1"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/title" />-->
+
+            <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <!--    </androidx.cardview.widget.CardView>-->
+        </ScrollView>
 
     </RelativeLayout>
 
@@ -115,7 +117,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:contentDescription="@string/instructor1"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
