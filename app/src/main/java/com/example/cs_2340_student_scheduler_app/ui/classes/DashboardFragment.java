@@ -32,6 +32,8 @@ public class DashboardFragment extends Fragment {
     private FloatingActionButton buttonDelete;
     private ArrayList<Classes> classList = new ArrayList<>();
 
+    private ArrayList<Integer> index = new ArrayList<>();
+
 
     private FragmentDashboardBinding binding;
 
@@ -40,6 +42,7 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
+        index.add(0);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -53,7 +56,7 @@ public class DashboardFragment extends Fragment {
 //        classList.add(new Classes("Math", "230", "Mr Math"));
 //        classList.add(new Classes("Science", "740", "Mr Science"));
 
-        ClassAdapter classAdapter = new ClassAdapter(getContext(), classList);
+        ClassAdapter classAdapter = new ClassAdapter(getContext(), classList, this, index);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         courseCards.setLayoutManager(linearLayoutManager);
@@ -98,6 +101,38 @@ public class DashboardFragment extends Fragment {
                 System.out.println(o);
                 classList.set(classList.size() - 1, classList.get(classList.size() - 1)).setInstructor(o.toString());
                 classAdapter.notifyItemChanged(classList.size() - 1);
+            }
+        });
+
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("instructorEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.set(index.get(0), classList.get(index.get(0))).setInstructor(o.toString());
+                classAdapter.notifyItemChanged(index.get(0));
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("timeEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.set(index.get(0), classList.get(index.get(0))).setTime(o.toString());
+                classAdapter.notifyItemChanged(index.get(0));
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("courseEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println(o);
+                classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
+                classAdapter.notifyItemChanged(index.get(0));
+                classList.remove(classList.size() - 1);
             }
         });
         buttonAdd.setOnClickListener(new View.OnClickListener() {

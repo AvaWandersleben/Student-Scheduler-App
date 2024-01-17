@@ -8,6 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.R;
@@ -18,9 +23,14 @@ import java.util.ArrayList;
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     private final Context context;
     private ArrayList<Classes> classList;
+    private Fragment from;
+
+    private ArrayList<Integer> index;
 
     // Constructor
-    public ClassAdapter(Context context, ArrayList<Classes> classList) {
+    public ClassAdapter(Context context, ArrayList<Classes> classList, Fragment from, ArrayList<Integer> index) {
+        this.index = index;
+        this.from = from;
         this.context = context;
         this.classList = classList;
     }
@@ -72,8 +82,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             });
 
             editButt.setOnClickListener(view -> {
-                adapter.classList.get(getAdapterPosition()).setCourseName("Edited");
-                adapter.notifyItemChanged(getAdapterPosition());
+                adapter.index.set(0, getAdapterPosition());
+                NavHostFragment.findNavController(adapter.from).navigate(R.id.action_navigation_dashboard_to_navigation_edit_fragment);
             });
         }
 
