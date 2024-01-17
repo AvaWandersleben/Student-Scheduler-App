@@ -19,26 +19,27 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_addClass"
             app:destination="@id/navigation_addClass" />
-        <argument
-            android:name="className"
-            app:argType="string"
-            app:nullable="true"/>
-        <argument
-            android:name="time"
-            app:argType="string" />
-        <argument
-            android:name="instructName"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_navigation_dashboard_to_navigation_edit_fragment"
-            app:destination="@id/navigation_edit_fragment" />
+<!--        <argument-->
+<!--            android:name="className"-->
+<!--            app:argType="string"-->
+<!--            app:nullable="true"/>-->
+<!--        <argument-->
+<!--            android:name="time"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="instructName"-->
+<!--            app:argType="string" />-->
     </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.cs_2340_student_scheduler_app.ui.notifications.NotificationsFragment"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_assignments" >
+        <action
+            android:id="@+id/action_navigation_notifications_to_navigation_assignment_menu_fragment"
+            app:destination="@id/navigation_assignment_menu_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_addClass"
@@ -51,12 +52,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_edit_fragment"
-        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.EditFragment"
-        android:label="Edit Fragment"
-        tools:layout="@layout/edit_fragment" >
-        <action
-            android:id="@+id/action_navigation_edit_fragment_to_navigation_dashboard"
-            app:destination="@id/navigation_dashboard" />
+        android:id="@+id/navigation_assignment_menu_fragment"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment"
+        android:label="Assignment Menu Fragment"
+        tools:layout="@layout/fragment_assignment_menu" >
     </fragment>
 </navigation>

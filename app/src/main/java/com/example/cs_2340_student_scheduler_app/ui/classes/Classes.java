@@ -1,6 +1,8 @@
 package com.example.cs_2340_student_scheduler_app.ui.classes;
 
-public class Classes {
+import java.io.Serializable;
+
+public class Classes implements Serializable {
     private String courseName;
 
     /*
@@ -12,6 +14,9 @@ public class Classes {
     private String time;
 
     private String instructor;
+
+    public Classes() {
+    }
 
     public Classes(String courseName, String time, String instructor) {
         this.courseName = courseName;

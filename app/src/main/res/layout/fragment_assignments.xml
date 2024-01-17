@@ -26,7 +26,7 @@
             tools:context=".MainActivity">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/idClass"
+                android:id="@+id/idAssignments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:contentDescription="@string/add_class"
+        android:contentDescription="@string/add_assignment"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
