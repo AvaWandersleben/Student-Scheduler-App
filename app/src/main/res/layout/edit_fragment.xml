@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/classNameInstruct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/className"
@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="0.805" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/timeInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
@@ -68,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/instructorInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
@@ -82,7 +82,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/submitButt"
+        android:id="@+id/submitButtEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submitButtClass"

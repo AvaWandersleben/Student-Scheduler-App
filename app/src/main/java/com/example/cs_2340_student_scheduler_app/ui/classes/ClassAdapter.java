@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +24,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
     private ArrayList<Integer> index;
 
-    // Constructor
     public ClassAdapter(Context context, ArrayList<Classes> classList, Fragment from, ArrayList<Integer> index) {
         this.index = index;
         this.from = from;
@@ -38,14 +34,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     @NonNull
     @Override
     public ClassAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // to inflate the layout for each item of recycler view.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_card, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
-        // to set data to textview and imageview of each card layout
         Classes model = classList.get(position);
         holder.className.setText(model.getCourseName());
         holder.timeText.setText(model.getTime());
@@ -54,11 +48,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        // this method is used for showing number of card items in recycler view
         return classList.size();
     }
 
-    // View holder class for initializing of your views such as TextView and Imageview
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView className;
         private final TextView timeText;
