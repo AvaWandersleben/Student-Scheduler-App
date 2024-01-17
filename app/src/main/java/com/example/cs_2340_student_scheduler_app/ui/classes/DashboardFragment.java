@@ -73,7 +73,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
-                classList.set(index.get(0), classList.get(index.get(0))).setInstructor(o.toString());
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setInstructor(o.toString());
                 saveData();
 //                classAdapter.notifyItemChanged(index.get(0));
             }
@@ -84,7 +85,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Time Name: " +o + index.get(0));
-                classList.set(index.get(0), classList.get(index.get(0))).setTime(o.toString());
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setTime(o.toString());
                 saveData();
 //                classAdapter.notifyItemChanged(index.get(0));
             }
@@ -95,7 +97,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Course Name: " +o+ index.get(0));
-                classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
                 saveData();
             }
         });

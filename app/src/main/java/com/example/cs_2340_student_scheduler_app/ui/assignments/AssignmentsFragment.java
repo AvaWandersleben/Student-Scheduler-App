@@ -85,7 +85,8 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
+                if (!assignmentList.isEmpty())
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
                 saveData();
 //                classAdapter.notifyItemChanged(index.get(0));
             }
@@ -96,7 +97,8 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
-                assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
+                if (!assignmentList.isEmpty())
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
                 saveData();
 //                classAdapter.notifyItemChanged(index.get(0));
             }
@@ -107,7 +109,8 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default"));
+                if (!assignmentList.isEmpty())
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default"));
                 saveData();
             }
         });

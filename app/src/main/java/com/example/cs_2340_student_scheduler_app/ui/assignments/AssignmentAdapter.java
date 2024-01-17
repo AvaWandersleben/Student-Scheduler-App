@@ -16,9 +16,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.R;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
-import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
