@@ -15,35 +15,40 @@
                     android:layout_height="match_parent"
             android:background="@color/cardview_light_background"
             >
-        <TextView
-            android:id="@+id/className"
-            style="@style/TextAppearance.MaterialComponents.Headline3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/class1"
-            ndroid:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/timeText"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/time1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/className" />
+                <TextView
+                    android:id="@+id/className"
+                    style="@style/TextAppearance.MaterialComponents.Headline3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:text="@string/class1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    ndroid:ignore="MissingConstraints"
+                    ndroid:layout_editor_absoluteY="4dp" />
 
-        <TextView
-            android:id="@+id/instructName"
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/instructor1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timeText" />
+                <TextView
+                    android:id="@+id/timeText"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/time1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/className" />
+
+                <TextView
+                    android:id="@+id/instructName"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="90dp"
+                    android:text="@string/instructor1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/timeText" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/deleteBut"

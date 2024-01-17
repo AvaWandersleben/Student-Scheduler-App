@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/navigation_addClass"
         android:name="com.example.cs_2340_student_scheduler_app.ui.classes.MenuFragment"
-        android:label="Menu"
+        android:label="Edit Class Details"
         tools:layout="@layout/new_class_menu" >
         <action
             android:id="@+id/action_navigation_addClass_to_navigation_dashboard"
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/navigation_assignment_menu_fragment"
         android:name="com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment"
-        android:label="Assignment Menu Fragment"
+        android:label="Edit Assignment Details"
         tools:layout="@layout/fragment_assignment_menu" >
     </fragment>
 </navigation>
