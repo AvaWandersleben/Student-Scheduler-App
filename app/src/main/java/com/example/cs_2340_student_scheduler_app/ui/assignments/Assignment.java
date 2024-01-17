@@ -40,4 +40,17 @@ public class Assignment {
     public String getClassName() {
         return (associatedClass == null ? null : associatedClass.getCourseName());
     }
+
+    public int compareDate(Assignment other) {
+        String[] thisDate = dueDate.split("/");
+        String[] otherDate = other.dueDate.split("/");
+        for (int i = 2; i >= 0; i--) {
+            if (Integer.parseInt(thisDate[i]) > Integer.parseInt(otherDate[i])) {
+                return 1;
+            } else if (Integer.parseInt(thisDate[i]) < Integer.parseInt(otherDate[i])) {
+                return -1;
+            }
+        }
+        return 0;
+    }
 }

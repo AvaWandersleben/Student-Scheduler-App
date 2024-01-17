@@ -64,6 +64,18 @@ public class AssignmentsFragment extends Fragment {
         assignmentCards.setLayoutManager(linearLayoutManager);
         assignmentCards.setAdapter(assignmentAdapter);
 
+        binding.sortSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (isChecked) {
+                System.out.println("due date");
+                sortDueDate();
+            } else {
+                System.out.println("course name");
+                sortCourseName();
+            }
+            saveData();
+            assignmentAdapter.notifyDataSetChanged();
+        }));
+
 
         NavController navController = NavHostFragment.findNavController(this);
 
@@ -169,7 +181,31 @@ public class AssignmentsFragment extends Fragment {
     }
 
     public void sortDueDate() {
+        //loadData();
+        for (int i = 0; i < assignmentList.size() - 1; i++) {
+            for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
+                if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
+                    Assignment temp = assignmentList.get(j);
+                    assignmentList.set(j, assignmentList.get(j + 1));
+                    assignmentList.set(j + 1, temp);
+                    //saveData();
+                }
+            }
+        }
+    }
 
+    public void sortCourseName() {
+       // loadData();
+        for (int i = 0; i < assignmentList.size() - 1; i++) {
+            for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
+                if (assignmentList.get(j).getClassName().compareTo(assignmentList.get(j + 1).getClassName()) > 0) {
+                    Assignment temp = assignmentList.get(j);
+                    assignmentList.set(j, assignmentList.get(j + 1));
+                    assignmentList.set(j + 1, temp);
+                    //saveData();
+                }
+            }
+        }
     }
 
     @Override

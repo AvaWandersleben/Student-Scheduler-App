@@ -20,4 +20,5 @@
     <string name="assignment_title">Assignment Title:</string>
     <string name="due_date_menu">Due Date:</string>
     <string name="class_text">Class:</string>
+    <string name="sort_by_due_date">Sort By Due Date</string>
 </resources>
