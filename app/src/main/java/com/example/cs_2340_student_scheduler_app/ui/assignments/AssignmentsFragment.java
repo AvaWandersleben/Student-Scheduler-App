@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -64,17 +67,34 @@ public class AssignmentsFragment extends Fragment {
         assignmentCards.setLayoutManager(linearLayoutManager);
         assignmentCards.setAdapter(assignmentAdapter);
 
-        binding.sortSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            if (isChecked) {
-                System.out.println("due date");
-                sortDueDate();
-            } else {
-                System.out.println("course name");
-                sortCourseName();
+        Spinner spinner = binding.sortSpinner;
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(
+                        getActivity(),
+                        R.array.sorter_array,
+                        android.R.layout.simple_spinner_item
+
+                );
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(sortAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (assignmentList.isEmpty()) return;
+                if (position == 0) {
+                    System.out.println("due date");
+                    sortDueDate();
+                } else {
+                    sortCourseName();
+                }
+                saveData();
+                assignmentAdapter.notifyDataSetChanged();
             }
-            saveData();
-            assignmentAdapter.notifyDataSetChanged();
-        }));
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         NavController navController = NavHostFragment.findNavController(this);
@@ -111,14 +131,21 @@ public class AssignmentsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!assignmentList.isEmpty())
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default"));
+                if (binding.sortSpinner.getSelectedItemPosition() == 0) {
+                    System.out.println("due date");
+                    sortDueDate();
+                } else {
+                    sortCourseName();
+                }
                 saveData();
+                assignmentAdapter.notifyDataSetChanged();
             }
         });
         buttonAdd.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                assignmentList.add(new Assignment(new Classes(), "default", "default"));
+                assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000"));
                 saveData();
                 index.set(0, assignmentList.size() - 1);
                 NavHostFragment.findNavController(AssignmentsFragment.this).navigate(R.id.action_navigation_notifications_to_navigation_assignment_menu_fragment);
@@ -187,6 +214,7 @@ public class AssignmentsFragment extends Fragment {
         //loadData();
         for (int i = 0; i < assignmentList.size() - 1; i++) {
             for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
+                if (j + 1 < assignmentList.size())
                 if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
                     Assignment temp = assignmentList.get(j);
                     assignmentList.set(j, assignmentList.get(j + 1));

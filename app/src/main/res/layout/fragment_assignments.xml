@@ -9,17 +9,16 @@
     app:contentInsetEnd="0dp"
     app:contentInsetStart="0dp">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/sort_switch"
+    <Spinner
+        android:id="@+id/sort_spinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sort_by_due_date"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/idAssignments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.592" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idAssignments"
@@ -46,5 +45,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="@string/sort_by"
+        app:layout_constraintBottom_toTopOf="@+id/idAssignments"
+        app:layout_constraintEnd_toStartOf="@+id/sort_spinner"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

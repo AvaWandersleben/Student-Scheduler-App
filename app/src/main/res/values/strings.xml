@@ -21,4 +21,9 @@
     <string name="due_date_menu">Due Date:</string>
     <string name="class_text">Class:</string>
     <string name="sort_by_due_date">Sort By Due Date</string>
+    <string name="sort_by">Sort By:</string>
+    <string-array name="sorter_array">
+        <item>Closest Due Date</item>
+        <item>Class Name</item>
+    </string-array>
 </resources>
