@@ -133,7 +133,6 @@ public class DashboardFragment extends Fragment {
         // in below line we are getting data from gson
         // and saving it to our array list
         classList = gson.fromJson(json, type);
-        System.out.println(classList.size());
 
         // checking below if the array list is empty or not
         if (classList == null) {
@@ -167,10 +166,6 @@ public class DashboardFragment extends Fragment {
         // below line is to apply changes
         // and save data in shared prefs.
         editor.apply();
-        System.out.println(classList.size());
-
-        // after saving data we are displaying a toast message.
-        //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
     }
 
     @Override

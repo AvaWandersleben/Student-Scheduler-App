@@ -38,6 +38,6 @@ public class Assignment {
     }
 
     public String getClassName() {
-        return associatedClass.getCourseName();
+        return (associatedClass == null ? null : associatedClass.getCourseName());
     }
 }
