@@ -76,7 +76,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
-                adapter.assignmentList.get(getAdapterPosition()).delete();
                 adapter.assignmentList.remove(getAdapterPosition());
                 adapter.saveData();
                 adapter.notifyItemRemoved(getAdapterPosition());

@@ -53,6 +53,8 @@ public class AssignmentsFragment extends Fragment {
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         loadData();
+        Assignment.setContext(getActivity());
+        Assignment.loadData();
         RecyclerView assignmentCards = root.findViewById(R.id.idAssignments);
 
         AssignmentAdapter assignmentAdapter = new AssignmentAdapter(getContext(), assignmentList, this, index);

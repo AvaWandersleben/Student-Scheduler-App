@@ -1,9 +1,17 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.Nullable;
 
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Assignment {
@@ -11,8 +19,10 @@ public class Assignment {
     private Classes associatedClass;
     private String title;
     private String dueDate;
+    private static Context context;
 
     public Assignment(Classes associatedClass, String title, String dueDate) {
+        loadData();
         this.associatedClass = associatedClass;
         this.title = title;
         this.dueDate = dueDate;
@@ -24,7 +34,10 @@ public class Assignment {
 
     public void setAssociatedClass(Classes associatedClass) {
         this.associatedClass = associatedClass;
-        classList.add(associatedClass);
+//        if (!classList.contains(associatedClass)) {
+//            classList.add(associatedClass);
+//        }
+//        saveData();
     }
 
     public String getTitle() {
@@ -48,12 +61,15 @@ public class Assignment {
     }
 
     public int getClassNameLoc() {
+        System.out.println("*");
+        for (Classes c : classList) {
+            System.out.println(c.getCourseName());
+        }
         return classList.indexOf(associatedClass);
     }
 
-    public void delete() {
-        if(classList.indexOf(associatedClass) != -1)
-        classList.remove(classList.indexOf(associatedClass));
+    public static void setContext(Context contextNew) {
+        context = contextNew;
     }
 
     public int compareDate(Assignment other) {
@@ -76,5 +92,16 @@ public class Assignment {
             return -1;
         }
         return null;
+    }
+
+    public static void loadData() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("courses", null);
+        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        classList = gson.fromJson(json, type);
+        if (classList == null) {
+            classList = new ArrayList<>();
+        }
     }
 }
