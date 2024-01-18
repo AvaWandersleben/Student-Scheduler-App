@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -103,10 +104,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
                 @Override
                 public boolean test(Assignment assignment) {
                     Classes course = assignment.getAssociatedClass();
+                    System.out.println(course.getCourseName());
+                    System.out.println(adapter.classList.contains(course));
                     return !adapter.classList.contains(course);
                 }
             });
-            adapter.saveData();
+            System.out.println("*");
+            for (Assignment a : assignments) {
+                System.out.println(a.getClassName());
+            }
+            AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
         }
     }
 

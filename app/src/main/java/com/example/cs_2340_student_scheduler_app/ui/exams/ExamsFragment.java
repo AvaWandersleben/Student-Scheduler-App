@@ -1,4 +1,4 @@
-package com.example.cs_2340_student_scheduler_app.ui.assignments;
+package com.example.cs_2340_student_scheduler_app.ui.exams;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -19,6 +19,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
+import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsBinding;
+import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragment;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
+import com.example.cs_2340_student_scheduler_app.ui.exams.ExamAdapter;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,16 +41,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AssignmentsFragment extends Fragment {
+public class ExamsFragment extends Fragment {
     private FloatingActionButton buttonAdd;
-    private ArrayList<Assignment> assignmentList = new ArrayList<>();
+    private ArrayList<Exam> examList = new ArrayList<>();
 
     private ArrayList<Integer> index = new ArrayList<>();
 
-    public static AssignmentAdapter assignmentAdapter;
 
-
-    private FragmentAssignmentsBinding binding;
+    private FragmentExamsBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,21 +57,21 @@ public class AssignmentsFragment extends Fragment {
                 new ViewModelProvider(this).get(ClassesViewModel.class);
         index.add(0);
 
-        binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
+        binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         loadData();
         Assignment.setContext(getActivity());
         Assignment.loadData();
-        RecyclerView assignmentCards = root.findViewById(R.id.idAssignments);
+        RecyclerView examCards = root.findViewById(R.id.idExams);
 
-        assignmentAdapter = new AssignmentAdapter(getContext(), assignmentList, this, index);
+        ExamAdapter examAdapter = new ExamAdapter(getContext(), examList, this, index);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
-        assignmentCards.setLayoutManager(linearLayoutManager);
-        assignmentCards.setAdapter(assignmentAdapter);
+        examCards.setLayoutManager(linearLayoutManager);
+        examCards.setAdapter(examAdapter);
 
-        setUpSpinner(assignmentAdapter);
-        updateChanges(assignmentAdapter);
+        setUpSpinner(examAdapter);
+        updateChanges(examAdapter);
         setUpAddButton(root);
         return root;
 
@@ -78,17 +83,17 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000"));
+                examList.add(new Exam());
                 saveData();
-                index.set(0, assignmentList.size() - 1);
+                index.set(0, examList.size() - 1);
                 int indexPar = index.get(0);
-                AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
-                NavHostFragment.findNavController(AssignmentsFragment.this).navigate(action);
+                ExamsFragmentDirections.ActionNavigationExamsToNavigationExamsMenuFragment action = ExamsFragmentDirections.actionNavigationExamsToNavigationExamsMenuFragment(indexPar);
+                NavHostFragment.findNavController(ExamsFragment.this).navigate(action);
             }
         });
     }
 
-    private void updateChanges(AssignmentAdapter assignmentAdapter) {
+    private void updateChanges(ExamAdapter assignmentAdapter) {
         NavController navController = NavHostFragment.findNavController(this);
 
 
@@ -97,56 +102,60 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
+                if (!examList.isEmpty())
+                    examList.set(index.get(0), examList.get(index.get(0))).setTitle(o.toString());
                 saveData();
             }
         });
 
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dueDateEdit").observe(getViewLifecycleOwner(), new Observer() {
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dateEdit").observe(getViewLifecycleOwner(), new Observer() {
 
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
-                if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
+                if (!examList.isEmpty())
+                    examList.set(index.get(0), examList.get(index.get(0))).setDate(o.toString());
                 saveData();
             }
         });
 
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("classEdit").observe(getViewLifecycleOwner(), new Observer() {
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("timeEdit").observe(getViewLifecycleOwner(), new Observer() {
 
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default"));
-                if (binding.sortSpinner.getSelectedItemPosition() == 0) {
-                    System.out.println("due date");
-                    sortDueDate();
-                } else {
-                    sortCourseName();
-                }
+                if (!examList.isEmpty())
+                    examList.set(index.get(0), examList.get(index.get(0))).setTime(o.toString());
                 saveData();
-                assignmentAdapter.notifyDataSetChanged();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("locEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println("Set Assignment Name: " +o+ index.get(0));
+                if (!examList.isEmpty())
+                    examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
+                saveData();
             }
         });
     }
 
-    private void setUpSpinner(AssignmentAdapter assignmentAdapter) {
-        Spinner spinner = binding.sortSpinner;
+    private void setUpSpinner(ExamAdapter examAdapter) {
+        Spinner spinner = binding.sortSpinnerExam;
         ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(
-                        getActivity(),
-                        R.array.sorter_array,
-                        android.R.layout.simple_spinner_item
+                getActivity(),
+                R.array.sorter_array,
+                android.R.layout.simple_spinner_item
 
-                );
+        );
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(sortAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (assignmentList.isEmpty()) return;
+                if (examList.isEmpty()) return;
                 if (position == 0) {
                     System.out.println("due date");
                     sortDueDate();
@@ -154,7 +163,7 @@ public class AssignmentsFragment extends Fragment {
                     sortCourseName();
                 }
                 saveData();
-                assignmentAdapter.notifyDataSetChanged();
+                examAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -168,11 +177,11 @@ public class AssignmentsFragment extends Fragment {
         Context context = getActivity();
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("assignments", null);
-        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
-        assignmentList = gson.fromJson(json, type);
-        if (assignmentList == null) {
-            assignmentList = new ArrayList<>();
+        String json = sharedPreferences.getString("exams", null);
+        Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
+        examList = gson.fromJson(json, type);
+        if (examList == null) {
+            examList = new ArrayList<>();
         }
     }
 
@@ -181,31 +190,31 @@ public class AssignmentsFragment extends Fragment {
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(assignmentList);
-        editor.putString("assignments", json);
+        String json = gson.toJson(examList);
+        editor.putString("exams", json);
         editor.apply();
     }
 
     public void sortDueDate() {
-        for (int i = 0; i < assignmentList.size() - 1; i++) {
-            for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
-                if (j + 1 < assignmentList.size())
-                if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
-                    Assignment temp = assignmentList.get(j);
-                    assignmentList.set(j, assignmentList.get(j + 1));
-                    assignmentList.set(j + 1, temp);
-                }
+        for (int i = 0; i < examList.size() - 1; i++) {
+            for (int j = 0; j < examList.size() - 1 - i; j++) {
+                if (j + 1 < examList.size())
+                    if (examList.get(j).compareDate(examList.get(j + 1)) > 0) {
+                        Exam temp = examList.get(j);
+                        examList.set(j, examList.get(j + 1));
+                        examList.set(j + 1, temp);
+                    }
             }
         }
     }
 
     public void sortCourseName() {
-        for (int i = 0; i < assignmentList.size() - 1; i++) {
-            for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
-                if (assignmentList.get(j).getClassName().compareTo(assignmentList.get(j + 1).getClassName()) > 0) {
-                    Assignment temp = assignmentList.get(j);
-                    assignmentList.set(j, assignmentList.get(j + 1));
-                    assignmentList.set(j + 1, temp);
+        for (int i = 0; i < examList.size() - 1; i++) {
+            for (int j = 0; j < examList.size() - 1 - i; j++) {
+                if (examList.get(j).getTitle().compareTo(examList.get(j + 1).getTitle()) > 0) {
+                    Exam temp = examList.get(j);
+                    examList.set(j, examList.get(j + 1));
+                    examList.set(j + 1, temp);
                 }
             }
         }

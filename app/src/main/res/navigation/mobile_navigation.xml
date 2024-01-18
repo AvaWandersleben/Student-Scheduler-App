@@ -19,16 +19,6 @@
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_addClass"
             app:destination="@id/navigation_addClass" />
-<!--        <argument-->
-<!--            android:name="className"-->
-<!--            app:argType="string"-->
-<!--            app:nullable="true"/>-->
-<!--        <argument-->
-<!--            android:name="time"-->
-<!--            app:argType="string" />-->
-<!--        <argument-->
-<!--            android:name="instructName"-->
-<!--            app:argType="string" />-->
     </fragment>
 
     <fragment
@@ -59,6 +49,26 @@
         android:name="com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment"
         android:label="Edit Assignment Details"
         tools:layout="@layout/fragment_assignment_menu" >
+        <argument
+            android:name="index"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_exams"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.exams.ExamsFragment"
+        android:label="Exams"
+        tools:layout="@layout/fragment_exams" >
+        <action
+            android:id="@+id/action_navigation_exams_to_navigation_exams_menu_fragment"
+            app:destination="@id/navigation_exams_menu_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_exams_menu_fragment"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.exams.ExamMenuFragment"
+        android:label="Edit Exam Details"
+        tools:layout="@layout/fragment_exams_menu" >
         <argument
             android:name="index"
             app:argType="integer" />

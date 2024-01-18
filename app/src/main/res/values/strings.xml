@@ -22,6 +22,9 @@
     <string name="class_text">Class:</string>
     <string name="sort_by_due_date">Sort By Due Date</string>
     <string name="sort_by">Sort By:</string>
+    <string name="time">Time:</string>
+    <string name="exam_title">Exam Title:</string>
+    <string name="exams">Exams</string>
     <string-array name="sorter_array">
         <item>Closest Due Date</item>
         <item>Class Name</item>
