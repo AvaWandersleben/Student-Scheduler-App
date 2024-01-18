@@ -13,11 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.cs_2340_student_scheduler_app.databinding.NewClassMenuBinding;
+import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
 
-public class MenuFragment extends Fragment {
+public class ClassesMenuFragment extends Fragment {
 
-    private NewClassMenuBinding binding;
+    private FragmentClassesMenuBinding binding;
     private EditText courseName;
     private EditText instructName;
     private EditText timeText;
@@ -25,7 +25,7 @@ public class MenuFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        binding = NewClassMenuBinding.inflate(inflater, container, false);
+        binding = FragmentClassesMenuBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
 
@@ -46,7 +46,7 @@ public class MenuFragment extends Fragment {
                 String instructNameStr = instructName.getText().toString();
                 String timeTextStr = timeText.getText().toString();
 
-                NavController navController = NavHostFragment.findNavController(MenuFragment.this);
+                NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("courseEdit", courseNameStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("timeEdit", timeTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("instructorEdit", instructNameStr);

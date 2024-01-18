@@ -4,13 +4,6 @@ import java.io.Serializable;
 
 public class Classes implements Serializable {
     private String courseName;
-
-    /*
-    Store time as an integer value:
-    - 123 = 1:23
-    - 1230 = 12:30
-    - 2314 = 23:14 = 11:14
-     */
     private String time;
 
     private String instructor;
@@ -47,12 +40,6 @@ public class Classes implements Serializable {
     public void setTime(String time) {
         this.time = time;
     }
-
-    //returns time as a formatted string
-//    public String getTimeString() {
-//        String postMark = (time > 1200 ? "pm" : "am");
-//        return (time / 100) % 12 + ":" + time % 100 + postMark;
-//    }
 
     @Override
     public boolean equals(Object o) {

@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.DashboardFragment"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.ClassesFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_classes" >
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_addClass"
             app:destination="@id/navigation_addClass" />
@@ -43,9 +43,9 @@
 
     <fragment
         android:id="@+id/navigation_addClass"
-        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.MenuFragment"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragment"
         android:label="Edit Class Details"
-        tools:layout="@layout/new_class_menu" >
+        tools:layout="@layout/fragment_classes_menu" >
         <action
             android:id="@+id/action_navigation_addClass_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />

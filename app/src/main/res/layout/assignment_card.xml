@@ -21,8 +21,9 @@
             style="@style/TextAppearance.MaterialComponents.Headline3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
+            android:layout_marginEnd="90dp"
             android:text=""
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             ndroid:ignore="MissingConstraints" />
@@ -66,7 +67,8 @@
             android:layout_height="wrap_content"
             android:text="@string/editButton"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/deleteBut" />
+            app:layout_constraintEnd_toEndOf="@+id/deleteBut"
+            app:layout_constraintTop_toBottomOf="@+id/deleteBut" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

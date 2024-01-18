@@ -1,5 +1,7 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
+import androidx.annotation.Nullable;
+
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 
 public class Assignment {
@@ -44,13 +46,22 @@ public class Assignment {
     public int compareDate(Assignment other) {
         String[] thisDate = dueDate.split("/");
         String[] otherDate = other.dueDate.split("/");
-        for (int i = 2; i >= 0; i--) {
-            if (Integer.parseInt(thisDate[i]) > Integer.parseInt(otherDate[i])) {
-                return 1;
-            } else if (Integer.parseInt(thisDate[i]) < Integer.parseInt(otherDate[i])) {
-                return -1;
-            }
-        }
+        Integer x = compareIndex(thisDate, 2, otherDate);
+        if (x != null) return x;
+        Integer x1 = compareIndex(thisDate, 0, otherDate);
+        if (x1 != null) return x1;
+        Integer x2 = compareIndex(thisDate, 1, otherDate);
+        if (x2 != null) return x2;
         return 0;
+    }
+
+    @Nullable
+    private static Integer compareIndex(String[] thisDate, int x, String[] otherDate) {
+        if (Integer.parseInt(thisDate[x]) > Integer.parseInt(otherDate[x])) {
+            return 1;
+        } else if (Integer.parseInt(thisDate[x]) < Integer.parseInt(otherDate[x])) {
+            return -1;
+        }
+        return null;
     }
 }
