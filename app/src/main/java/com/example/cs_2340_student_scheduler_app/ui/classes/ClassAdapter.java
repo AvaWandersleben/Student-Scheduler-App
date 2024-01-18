@@ -16,9 +16,15 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     private final Context context;
@@ -26,6 +32,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     private Fragment from;
 
     private ArrayList<Integer> index;
+    private ArrayList<Assignment> assignmentList;
 
     public ClassAdapter(Context context, ArrayList<Classes> classList, Fragment from, ArrayList<Integer> index) {
         this.index = index;
@@ -72,6 +79,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
+                adapter.loadData();
+                filterAssignments(adapter.assignmentList);
                 adapter.classList.remove(getAdapterPosition());
                 adapter.saveData();
                 adapter.notifyItemRemoved(getAdapterPosition());
@@ -88,6 +97,17 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             this.adapter = adapter;
             return this;
         }
+
+        public void filterAssignments(ArrayList<Assignment> assignments){
+            assignments.removeIf(new Predicate<Assignment>() {
+                @Override
+                public boolean test(Assignment assignment) {
+                    Classes course = assignment.getAssociatedClass();
+                    return !adapter.classList.contains(course);
+                }
+            });
+            adapter.saveData();
+        }
     }
 
     private void saveData() {
@@ -95,8 +115,21 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(classList);
+        String json2 = gson.toJson(assignmentList);
         editor.putString("courses", json);
+        editor.putString("assignments", json2);
         editor.apply();
-        System.out.println(classList.size());
+    }
+
+    private void loadData() {
+        Context context = from.getActivity();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("assignments", null);
+        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
+        assignmentList = gson.fromJson(json, type);
+        if (assignmentList == null) {
+            assignmentList = new ArrayList<>();
+        }
     }
 }
