@@ -4,7 +4,10 @@ import androidx.annotation.Nullable;
 
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 
+import java.util.ArrayList;
+
 public class Assignment {
+    private static ArrayList<Classes> classList = new ArrayList<>();
     private Classes associatedClass;
     private String title;
     private String dueDate;
@@ -21,6 +24,7 @@ public class Assignment {
 
     public void setAssociatedClass(Classes associatedClass) {
         this.associatedClass = associatedClass;
+        classList.add(associatedClass);
     }
 
     public String getTitle() {
@@ -41,6 +45,15 @@ public class Assignment {
 
     public String getClassName() {
         return (associatedClass == null ? null : associatedClass.getCourseName());
+    }
+
+    public int getClassNameLoc() {
+        return classList.indexOf(associatedClass);
+    }
+
+    public void delete() {
+        if(classList.indexOf(associatedClass) != -1)
+        classList.remove(classList.indexOf(associatedClass));
     }
 
     public int compareDate(Assignment other) {

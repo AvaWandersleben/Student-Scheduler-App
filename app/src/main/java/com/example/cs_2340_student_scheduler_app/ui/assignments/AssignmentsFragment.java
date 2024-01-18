@@ -77,7 +77,9 @@ public class AssignmentsFragment extends Fragment {
                 assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000"));
                 saveData();
                 index.set(0, assignmentList.size() - 1);
-                NavHostFragment.findNavController(AssignmentsFragment.this).navigate(R.id.action_navigation_notifications_to_navigation_assignment_menu_fragment);
+                int indexPar = index.get(0);
+                AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
+                NavHostFragment.findNavController(AssignmentsFragment.this).navigate(action);
             }
         });
     }

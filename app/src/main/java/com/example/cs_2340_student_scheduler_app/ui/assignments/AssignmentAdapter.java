@@ -2,6 +2,7 @@ package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
@@ -75,6 +76,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
+                adapter.assignmentList.get(getAdapterPosition()).delete();
                 adapter.assignmentList.remove(getAdapterPosition());
                 adapter.saveData();
                 adapter.notifyItemRemoved(getAdapterPosition());
@@ -82,7 +84,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
 
             editButt.setOnClickListener(view -> {
                 adapter.index.set(0, getAdapterPosition());
-                NavHostFragment.findNavController(adapter.from).navigate(R.id.action_navigation_notifications_to_navigation_assignment_menu_fragment);
+                int indexPar = adapter.index.get(0);
+                AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
+                NavHostFragment.findNavController(adapter.from).navigate(action);
             });
         }
 

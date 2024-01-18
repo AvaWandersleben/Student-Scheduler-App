@@ -79,7 +79,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
             editButt.setOnClickListener(view -> {
                 adapter.index.set(0, getAdapterPosition());
-                NavHostFragment.findNavController(adapter.from).navigate(R.id.action_navigation_dashboard_to_navigation_addClass);
+                ClassesFragmentDirections.ActionNavigationDashboardToNavigationAddClass action = ClassesFragmentDirections.actionNavigationDashboardToNavigationAddClass(adapter.index.get(0));
+                NavHostFragment.findNavController(adapter.from).navigate(action);
             });
         }
 

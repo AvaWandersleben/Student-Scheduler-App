@@ -2,6 +2,7 @@ package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,9 +34,9 @@ public class AssignmentMenuFragment extends Fragment {
     private FragmentAssignmentMenuBinding binding;
     private EditText title;
     private EditText dueDate;
-    private EditText associatedCourse;
 
     private ArrayList<Classes> classList;
+    private ArrayList<Assignment> assignments;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,8 +50,11 @@ public class AssignmentMenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadData();
+        int index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
+        title.setText(assignments.get(index).getTitle());
+        dueDate.setText(assignments.get(index).getDueDate());
 
         Spinner spinner = binding.classSpinner;
         ArrayList<String> classNames = new ArrayList<>();
@@ -60,6 +64,12 @@ public class AssignmentMenuFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, classNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        spinner.setSelection(assignments.get(index).getClassNameLoc());
+        System.out.println(assignments.get(index).getClassNameLoc());
+
+
+
 
 
         binding.submitButtEdit.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +95,15 @@ public class AssignmentMenuFragment extends Fragment {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("courses", null);
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        Type type2 = new TypeToken<ArrayList<Assignment>>() {}.getType();
+        String json2 = sharedPreferences.getString("assignments", null);
+        assignments = gson.fromJson(json2, type2);
         classList = gson.fromJson(json, type);
         if (classList == null) {
             classList = new ArrayList<>();
+        }
+        if (assignments == null) {
+            assignments = new ArrayList<>();
         }
     }
 

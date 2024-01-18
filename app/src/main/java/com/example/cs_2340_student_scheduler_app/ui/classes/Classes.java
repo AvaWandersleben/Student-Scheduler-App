@@ -41,11 +41,8 @@ public class Classes implements Serializable {
         this.time = time;
     }
 
-    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || o.getClass() != getClass()) return false;
-        Classes other = (Classes) o;
-        return other.courseName.equals(courseName) && other.time == time && other.instructor.equals(instructor);
+        return ((Classes) o).courseName.equals(courseName);
     }
 }

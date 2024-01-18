@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesBinding;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -75,7 +76,8 @@ public class ClassesFragment extends Fragment {
                 classList.add(new Classes("default", "default", "default"));
                 saveData();
                 index.set(0, classList.size() - 1);
-                NavHostFragment.findNavController(ClassesFragment.this).navigate(R.id.action_navigation_dashboard_to_navigation_addClass);
+                ClassesFragmentDirections.ActionNavigationDashboardToNavigationAddClass action = ClassesFragmentDirections.actionNavigationDashboardToNavigationAddClass(index.get(0));
+                NavHostFragment.findNavController(ClassesFragment.this).navigate(action);
             }
         });
     }

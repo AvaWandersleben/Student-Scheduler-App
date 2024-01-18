@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_navigation_addClass_to_navigation_dashboard"
             app:destination="@id/navigation_dashboard" />
+        <argument
+            android:name="index"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -56,5 +59,8 @@
         android:name="com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment"
         android:label="Edit Assignment Details"
         tools:layout="@layout/fragment_assignment_menu" >
+        <argument
+            android:name="index"
+            app:argType="integer" />
     </fragment>
 </navigation>

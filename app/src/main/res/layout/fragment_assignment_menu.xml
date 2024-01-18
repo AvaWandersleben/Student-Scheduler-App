@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="date"
         android:text="@string/editTextName"
         app:layout_constraintBottom_toTopOf="@+id/instructorInstructions"
         app:layout_constraintEnd_toEndOf="parent"
