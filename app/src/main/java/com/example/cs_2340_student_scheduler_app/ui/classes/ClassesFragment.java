@@ -73,7 +73,7 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                classList.add(new Classes("default", "default", "default"));
+                classList.add(new Classes("default", "default", "default", "default", "monday", "default", "default", "default"));
                 saveData();
                 index.set(0, classList.size() - 1);
                 ClassesFragmentDirections.ActionNavigationDashboardToNavigationAddClass action = ClassesFragmentDirections.actionNavigationDashboardToNavigationAddClass(index.get(0));
@@ -115,6 +115,50 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Course Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
+                saveData();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("daysEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println("Set Instruct Name: " +o+ index.get(0));
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setDays(o.toString());
+                saveData();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("sectionEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println("Set Instruct Name: " +o+ index.get(0));
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setSection(o.toString());
+                saveData();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("locationEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println("Set Instruct Name: " +o+ index.get(0));
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setLocation(o.toString());
+                saveData();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("roomEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                System.out.println("Set Instruct Name: " +o+ index.get(0));
+                if (!classList.isEmpty())
+                    classList.set(index.get(0), classList.get(index.get(0))).setRoomNumber(o.toString());
                 saveData();
             }
         });

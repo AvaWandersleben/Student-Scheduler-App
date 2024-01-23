@@ -32,6 +32,10 @@ public class ClassesMenuFragment extends Fragment {
     private EditText courseName;
     private EditText instructName;
     private EditText timeText;
+    private EditText daysText;
+    private EditText sectionText;
+    private EditText locationText;
+    private EditText roomText;
 
     private ArrayList<Classes> classList;
 
@@ -51,9 +55,18 @@ public class ClassesMenuFragment extends Fragment {
         courseName = binding.editTextClassName;
         instructName = binding.editTextInstructorName;
         timeText = binding.editTextTime;
+        daysText = binding.editTextDays;
+        sectionText = binding.editTextSection;
+        locationText = binding.editTextLocation;
+        roomText = binding.editTextRoom;
+
         timeText.setText(classList.get(index).getTime());
         instructName.setText(classList.get(index).getInstructor());
         courseName.setText(classList.get(index).getCourseName());
+        daysText.setText(classList.get(index).getDays());
+        sectionText.setText(classList.get(index).getSection());
+        locationText.setText(classList.get(index).getLocation());
+        roomText.setText(classList.get(index).getRoomNumber());
 
 
         binding.submitButt.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +76,19 @@ public class ClassesMenuFragment extends Fragment {
                 String courseNameStr = courseName.getText().toString();
                 String instructNameStr = instructName.getText().toString();
                 String timeTextStr = timeText.getText().toString();
+                String daysTextStr = daysText.getText().toString();
+                String sectionTextStr = sectionText.getText().toString();
+                String locationTextStr = locationText.getText().toString();
+                String roomTextStr = roomText.getText().toString();
 
                 NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("courseEdit", courseNameStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("timeEdit", timeTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("instructorEdit", instructNameStr);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().set("daysEdit", daysTextStr);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().set("sectionEdit", sectionTextStr);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().set("roomEdit", roomTextStr);
                 navController.popBackStack();
             }
         });

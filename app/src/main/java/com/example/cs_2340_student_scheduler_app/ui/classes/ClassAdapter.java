@@ -53,8 +53,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
         Classes model = classList.get(position);
         holder.className.setText(model.getCourseName());
-        holder.timeText.setText(model.getTime());
-        holder.instruct.setText(model.getInstructor());
+        holder.timeText.setText("Next Class: " + model.getDayOfWeek() + " at " + model.getTime());
+        holder.instruct.setText("Instructor: " + model.getInstructor());
+        holder.room.setText("Room: " + model.getRoomNumber());
+        holder.location.setText("Location: " + model.getLocation());
+        holder.section.setText("Section: " + model.getSection());
     }
 
     @Override
@@ -66,6 +69,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         private final TextView className;
         private final TextView timeText;
         private final TextView instruct;
+        private final TextView section;
+        private final TextView location;
+        private final TextView room;
 
         private FloatingActionButton deleteButt;
         private Button editButt;
@@ -74,8 +80,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             className = itemView.findViewById(R.id.className);
-            timeText = itemView.findViewById(R.id.timeText);
-            instruct = itemView.findViewById(R.id.instructName);
+            timeText = itemView.findViewById(R.id.nextClass);
+            instruct = itemView.findViewById(R.id.professor);
+            section = itemView.findViewById(R.id.section);
+            location = itemView.findViewById(R.id.location);
+            room = itemView.findViewById(R.id.room);
             deleteButt = itemView.findViewById(R.id.deleteBut);
             editButt = itemView.findViewById(R.id.editButt);
 
