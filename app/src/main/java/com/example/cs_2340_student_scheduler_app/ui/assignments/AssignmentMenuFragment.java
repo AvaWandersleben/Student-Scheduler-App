@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
@@ -79,12 +81,22 @@ public class AssignmentMenuFragment extends Fragment {
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();
                 String associatedCourseStr = spinner.getSelectedItem().toString();
+                boolean goodData = true;
+                if (!ManipulateData.validateDate(dueDateStr)) {
+                    goodData = false;
+                }
 
                 NavController navController = NavHostFragment.findNavController(AssignmentMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("dueDateEdit", dueDateStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("classEdit", associatedCourseStr);
-                navController.popBackStack();
+                if (goodData) {
+                    navController.popBackStack();
+                } else {
+                    String message = "Date must be mm/dd/yyyy format.";
+                    Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+                    alert.show();
+                }
             }
         });
     }

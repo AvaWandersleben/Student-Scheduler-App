@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
@@ -80,6 +82,11 @@ public class ClassesMenuFragment extends Fragment {
                 String sectionTextStr = sectionText.getText().toString();
                 String locationTextStr = locationText.getText().toString();
                 String roomTextStr = roomText.getText().toString();
+                boolean goodData = true;
+                if (!ManipulateData.validateDayOfWeek(daysTextStr) ||
+                !ManipulateData.validateTime(timeTextStr)) {
+                    goodData = false;
+                }
 
                 NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("courseEdit", courseNameStr);
@@ -89,7 +96,19 @@ public class ClassesMenuFragment extends Fragment {
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("sectionEdit", sectionTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("roomEdit", roomTextStr);
-                navController.popBackStack();
+                if (goodData) {
+                    navController.popBackStack();
+                } else {
+                    String message = "";
+                    if (!ManipulateData.validateDayOfWeek(daysTextStr)) {
+                        message += "Days of Week must be comma separated with no spaces. ";
+                    }
+                    if (!ManipulateData.validateTime(timeTextStr)) {
+                        message += "Invalid time input.";
+                    }
+                    Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+                    alert.show();
+                }
             }
         });
     }
