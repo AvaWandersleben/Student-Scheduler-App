@@ -79,6 +79,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            final boolean[] confirmed = {false};
             className = itemView.findViewById(R.id.className);
             timeText = itemView.findViewById(R.id.nextClass);
             instruct = itemView.findViewById(R.id.professor);
@@ -89,11 +90,20 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
-                adapter.loadData();
-                filterAssignments(adapter.assignmentList);
-                adapter.classList.remove(getAdapterPosition());
-                adapter.saveData();
-                adapter.notifyItemRemoved(getAdapterPosition());
+                if (!confirmed[0]) {
+                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    System.out.println("triggered");
+                    System.out.println(confirmed[0]);
+                } else {
+                    System.out.println("trigered2");
+                    System.out.println(confirmed[0]);
+                    adapter.loadData();
+                    filterAssignments(adapter.assignmentList);
+                    adapter.classList.remove(getAdapterPosition());
+                    adapter.saveData();
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                }
+                confirmed[0] = !confirmed[0];
             });
 
             editButt.setOnClickListener(view -> {
