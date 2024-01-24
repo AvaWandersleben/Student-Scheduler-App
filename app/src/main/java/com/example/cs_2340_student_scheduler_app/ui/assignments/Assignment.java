@@ -19,13 +19,15 @@ public class Assignment {
     private Classes associatedClass;
     private String title;
     private String dueDate;
+    private boolean completed;
     private static Context context;
 
-    public Assignment(Classes associatedClass, String title, String dueDate) {
+    public Assignment(Classes associatedClass, String title, String dueDate, boolean completed) {
         loadData();
         this.associatedClass = associatedClass;
         this.title = title;
         this.dueDate = dueDate;
+        this.completed = completed;
     }
 
     public Classes getAssociatedClass() {
@@ -82,6 +84,14 @@ public class Assignment {
         Integer x2 = compareIndex(thisDate, 1, otherDate);
         if (x2 != null) return x2;
         return 0;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     @Nullable

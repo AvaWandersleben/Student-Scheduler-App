@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,14 +29,16 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
     private final Context context;
     private ArrayList<Assignment> assignmentList;
     private Fragment from;
+    private boolean deletingComplete;
 
     private ArrayList<Integer> index;
 
-    public AssignmentAdapter(Context context, ArrayList<Assignment> assignmentList, Fragment from, ArrayList<Integer> index) {
+    public AssignmentAdapter(Context context, ArrayList<Assignment> assignmentList, Fragment from, ArrayList<Integer> index, boolean deletingComplete) {
         this.index = index;
         this.from = from;
         this.context = context;
         this.assignmentList = assignmentList;
+        this.deletingComplete = deletingComplete;
     }
 
     @NonNull
@@ -51,6 +54,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         holder.title.setText(model.getTitle());
         holder.dueDate.setText(model.getDueDate());
         holder.associatedClass.setText(model.getClassName());
+        holder.completedSwitch.setChecked(model.isCompleted());
+
     }
 
     @Override
@@ -62,6 +67,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         private final TextView title;
         private final TextView dueDate;
         private final TextView associatedClass;
+        private final SwitchMaterial completedSwitch;
 
         private FloatingActionButton deleteButt;
         private Button editButt;
@@ -74,11 +80,18 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             associatedClass = itemView.findViewById(R.id.associatedClass);
             deleteButt = itemView.findViewById(R.id.deleteBut);
             editButt = itemView.findViewById(R.id.editButt);
+            completedSwitch = itemView.findViewById(R.id.completedSwitch);
+            final boolean[] confirmed = {false};
 
             deleteButt.setOnClickListener(view -> {
-                adapter.assignmentList.remove(getAdapterPosition());
-                adapter.saveData();
-                adapter.notifyItemRemoved(getAdapterPosition());
+                if (!confirmed[0]) {
+                    confirmed[0] = true;
+                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                } else {
+                    adapter.assignmentList.remove(getAdapterPosition());
+                    adapter.saveData();
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                }
             });
 
             editButt.setOnClickListener(view -> {
@@ -86,6 +99,15 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                 int indexPar = adapter.index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
                 NavHostFragment.findNavController(adapter.from).navigate(action);
+            });
+
+            completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                adapter.assignmentList.get(getAdapterPosition()).setCompleted(isChecked);
+                if (adapter.deletingComplete) {
+                    adapter.assignmentList.remove(getAdapterPosition());
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                }
+                adapter.saveData();
             });
         }
 
