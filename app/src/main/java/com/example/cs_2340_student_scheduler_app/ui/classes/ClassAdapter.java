@@ -132,7 +132,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             for (Assignment a : assignments) {
                 System.out.println(a.getClassName());
             }
-            AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
+            //AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
         }
     }
 
