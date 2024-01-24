@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 
 import java.lang.reflect.Type;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 import androidx.navigation.NavController;
@@ -59,7 +60,7 @@ public class AssignmentsFragment extends Fragment {
         Assignment.loadData();
         RecyclerView assignmentCards = root.findViewById(R.id.idAssignments);
 
-        assignmentAdapter = new AssignmentAdapter(getContext(), assignmentList, this, index);
+        assignmentAdapter = new AssignmentAdapter(getContext(), assignmentList, this, index, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         assignmentCards.setLayoutManager(linearLayoutManager);
@@ -68,6 +69,15 @@ public class AssignmentsFragment extends Fragment {
         setUpSpinner(assignmentAdapter);
         updateChanges(assignmentAdapter);
         setUpAddButton(root);
+
+        binding.incompleteSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (isChecked) {
+                AssignmentAdapter incompleteAdapter = new AssignmentAdapter(getContext(), getIncompleteAssignment(assignmentList), this, index, true);
+                assignmentCards.setAdapter(incompleteAdapter);
+            } else {
+                assignmentCards.setAdapter(assignmentAdapter);
+            }
+        }));
         return root;
 
     }
@@ -78,7 +88,7 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000"));
+                assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000", false));
                 saveData();
                 index.set(0, assignmentList.size() - 1);
                 int indexPar = index.get(0);
@@ -120,7 +130,7 @@ public class AssignmentsFragment extends Fragment {
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "default", "default", "default", "default"));
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
                     sortDueDate();
@@ -209,6 +219,16 @@ public class AssignmentsFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public ArrayList<Assignment> getIncompleteAssignment(ArrayList<Assignment> arr) {
+        ArrayList<Assignment> newArr = new ArrayList<>();
+        for (int i = 0; i < arr.size(); i++) {
+            if (!arr.get(i).isCompleted()) {
+                newArr.add(arr.get(i));
+            }
+        }
+        return newArr;
     }
 
     @Override

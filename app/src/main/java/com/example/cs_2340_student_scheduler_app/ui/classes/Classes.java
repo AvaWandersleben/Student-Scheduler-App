@@ -5,7 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Calendar;
 
-public class Classes implements Serializable {
+public class Classes {
     private String courseName;
     private String time;
     private String date;

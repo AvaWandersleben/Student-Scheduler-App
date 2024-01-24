@@ -25,6 +25,8 @@
     <string name="time">Time:</string>
     <string name="exam_title">Exam Title:</string>
     <string name="exams">Exams</string>
+    <string name="completed">Completed</string>
+    <string name="show_incomplete_only">Show Incomplete Only</string>
     <string-array name="sorter_array">
         <item>Closest Due Date</item>
         <item>Class Name</item>
