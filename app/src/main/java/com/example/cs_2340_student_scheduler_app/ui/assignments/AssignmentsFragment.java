@@ -120,7 +120,7 @@ public class AssignmentsFragment extends Fragment {
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default"));
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "default", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
                     sortDueDate();

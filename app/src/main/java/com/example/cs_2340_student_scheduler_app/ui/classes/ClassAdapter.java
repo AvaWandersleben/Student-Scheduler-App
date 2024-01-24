@@ -53,8 +53,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
         Classes model = classList.get(position);
         holder.className.setText(model.getCourseName());
-        holder.timeText.setText(model.getTime());
-        holder.instruct.setText(model.getInstructor());
+        holder.timeText.setText("Next Class: " + model.getDayOfWeek() + " at " + model.getTime());
+        holder.instruct.setText("Instructor: " + model.getInstructor());
+        holder.room.setText("Room: " + model.getRoomNumber());
+        holder.location.setText("Location: " + model.getLocation());
+        holder.section.setText("Section: " + model.getSection());
     }
 
     @Override
@@ -66,6 +69,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         private final TextView className;
         private final TextView timeText;
         private final TextView instruct;
+        private final TextView section;
+        private final TextView location;
+        private final TextView room;
 
         private FloatingActionButton deleteButt;
         private Button editButt;
@@ -73,18 +79,31 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            final boolean[] confirmed = {false};
             className = itemView.findViewById(R.id.className);
-            timeText = itemView.findViewById(R.id.timeText);
-            instruct = itemView.findViewById(R.id.instructName);
+            timeText = itemView.findViewById(R.id.nextClass);
+            instruct = itemView.findViewById(R.id.professor);
+            section = itemView.findViewById(R.id.section);
+            location = itemView.findViewById(R.id.location);
+            room = itemView.findViewById(R.id.room);
             deleteButt = itemView.findViewById(R.id.deleteBut);
             editButt = itemView.findViewById(R.id.editButt);
 
             deleteButt.setOnClickListener(view -> {
-                adapter.loadData();
-                filterAssignments(adapter.assignmentList);
-                adapter.classList.remove(getAdapterPosition());
-                adapter.saveData();
-                adapter.notifyItemRemoved(getAdapterPosition());
+                if (!confirmed[0]) {
+                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    System.out.println("triggered");
+                    System.out.println(confirmed[0]);
+                } else {
+                    System.out.println("trigered2");
+                    System.out.println(confirmed[0]);
+                    adapter.loadData();
+                    filterAssignments(adapter.assignmentList);
+                    adapter.classList.remove(getAdapterPosition());
+                    adapter.saveData();
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                }
+                confirmed[0] = !confirmed[0];
             });
 
             editButt.setOnClickListener(view -> {
@@ -113,7 +132,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             for (Assignment a : assignments) {
                 System.out.println(a.getClassName());
             }
-            AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
+            //AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
         }
     }
 
