@@ -80,10 +80,16 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder>{
             deleteButt = itemView.findViewById(R.id.deleteBut);
             editButt = itemView.findViewById(R.id.editButt);
 
+            final boolean[] confirmed = {false};
             deleteButt.setOnClickListener(view -> {
-                adapter.examList.remove(getAdapterPosition());
-                adapter.saveData();
-                adapter.notifyItemRemoved(getAdapterPosition());
+                if (!confirmed[0]) {
+                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    confirmed[0] = true;
+                } else {
+                    adapter.examList.remove(getAdapterPosition());
+                    adapter.saveData();
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                }
             });
 
             editButt.setOnClickListener(view -> {
