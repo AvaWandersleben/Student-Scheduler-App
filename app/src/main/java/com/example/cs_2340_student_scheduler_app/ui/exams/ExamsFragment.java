@@ -17,7 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
@@ -59,9 +62,9 @@ public class ExamsFragment extends Fragment {
 
         binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        loadData();
+        loadDB();
         Assignment.setContext(getActivity());
-        Assignment.loadData();
+        Assignment.loadDB();
         RecyclerView examCards = root.findViewById(R.id.idExams);
 
         ExamAdapter examAdapter = new ExamAdapter(getContext(), examList, this, index);
@@ -84,7 +87,7 @@ public class ExamsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 examList.add(new Exam());
-                saveData();
+                updateDB();
                 index.set(0, examList.size() - 1);
                 int indexPar = index.get(0);
                 ExamsFragmentDirections.ActionNavigationExamsToNavigationExamsMenuFragment action = ExamsFragmentDirections.actionNavigationExamsToNavigationExamsMenuFragment(indexPar);
@@ -104,7 +107,7 @@ public class ExamsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!examList.isEmpty())
                     examList.set(index.get(0), examList.get(index.get(0))).setTitle(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -115,7 +118,7 @@ public class ExamsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
                 if (!examList.isEmpty())
                     examList.set(index.get(0), examList.get(index.get(0))).setDate(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -126,7 +129,7 @@ public class ExamsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!examList.isEmpty())
                     examList.set(index.get(0), examList.get(index.get(0))).setTime(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -137,7 +140,7 @@ public class ExamsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!examList.isEmpty())
                     examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
-                saveData();
+                updateDB();
             }
         });
     }
@@ -162,7 +165,7 @@ public class ExamsFragment extends Fragment {
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                updateDB();
                 examAdapter.notifyDataSetChanged();
             }
 
@@ -173,26 +176,24 @@ public class ExamsFragment extends Fragment {
         });
     }
 
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("exams", null);
+        user.exams = gson.toJson(examList);
+        userDao.updateUsers(user);
+    }
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
         examList = gson.fromJson(json, type);
         if (examList == null) {
             examList = new ArrayList<>();
         }
-    }
-
-    private void saveData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(examList);
-        editor.putString("exams", json);
-        editor.apply();
     }
 
     public void sortDueDate() {

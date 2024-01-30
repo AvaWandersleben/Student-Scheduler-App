@@ -9,16 +9,42 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.room.Room;
 
 import com.example.cs_2340_student_scheduler_app.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    public static AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database").allowMainThreadQueries().build();
+        try {
+            User user = new User();
+            user.uid = 0;
+            user.userName = "";
+            user.classes = "";
+            user.assignments = "";
+            user.exams = "";
+            user.tasks = "";
+            MainActivity.db.userDao().insertAll(user);
+        } catch (RuntimeException r) {
+            User oldUser = db.userDao().getUser(0);
+            db.userDao().delete(oldUser);
+            User user = new User();
+            user.uid = 0;
+            user.userName = "";
+            user.classes = "";
+            user.assignments = "";
+            user.exams = "";
+            user.tasks = "";
+            MainActivity.db.userDao().insertAll(user);
+        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

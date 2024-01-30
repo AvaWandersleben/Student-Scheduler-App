@@ -16,7 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
@@ -89,7 +92,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
                 } else {
                     adapter.assignmentList.remove(getAdapterPosition());
-                    adapter.saveData();
+                    //adapter.saveData();
+                    adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
             });
@@ -107,7 +111,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     adapter.assignmentList.remove(getAdapterPosition());
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
-                adapter.saveData();
+                //adapter.saveData();
+                adapter.updateDB();
             });
         }
 
@@ -135,5 +140,13 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         String json = gson.toJson(assignmentList);
         editor.putString("assignments", json);
         editor.apply();
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.assignments = gson.toJson(assignmentList);
+        userDao.updateUsers(user);
     }
 }

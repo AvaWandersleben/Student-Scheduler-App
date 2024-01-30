@@ -18,7 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
@@ -54,7 +57,7 @@ public class ExamMenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         int index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
-        loadData();
+        loadDB();
         titleText = binding.editTitle;
         timeText = binding.examTime;
         dateText = binding.editDueDate;
@@ -99,11 +102,11 @@ public class ExamMenuFragment extends Fragment {
         });
     }
 
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("exams", null);
+        String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
         examList = gson.fromJson(json, type);
         if (examList == null) {

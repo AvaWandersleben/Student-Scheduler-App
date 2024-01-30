@@ -8,7 +8,6 @@ import java.util.Calendar;
 public class Classes {
     private String courseName;
     private String time;
-    private String date;
     private DayOfWeek[] days;
     private String section;
     private String location;
@@ -19,8 +18,7 @@ public class Classes {
     public Classes() {
     }
 
-    public Classes(String courseName, String time, String instructor, String date, String daysOfWeek, String section, String location, String roomNumber) {
-        this.date = date;
+    public Classes(String courseName, String time, String instructor, String daysOfWeek, String section, String location, String roomNumber) {
         this.section = section;
         this.location = location;
         this.roomNumber = roomNumber;
@@ -56,14 +54,6 @@ public class Classes {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getDayOfWeek() {
