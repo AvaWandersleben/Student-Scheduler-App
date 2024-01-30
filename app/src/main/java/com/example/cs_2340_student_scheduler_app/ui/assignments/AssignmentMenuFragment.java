@@ -21,7 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
@@ -51,7 +54,9 @@ public class AssignmentMenuFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData();
+        //loadData();
+        loadDB();
+        System.out.println(assignments.size());
         int index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
@@ -101,6 +106,29 @@ public class AssignmentMenuFragment extends Fragment {
         });
     }
 
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.classes;
+        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        Type type2 = new TypeToken<ArrayList<Assignment>>() {}.getType();
+        String json2 = user.assignments;
+        assignments = gson.fromJson(json2, type2);
+        classList = gson.fromJson(json, type);
+        if (classList == null) {
+            classList = new ArrayList<>();
+        }
+        if (assignments == null) {
+            assignments = new ArrayList<>();
+        }
+        System.out.println(json2);
+        System.out.println("Assignments: ");
+        for (Assignment a : assignments) {
+            System.out.println(a);
+        }
+    }
     private void loadData() {
         Context context = getActivity();
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);

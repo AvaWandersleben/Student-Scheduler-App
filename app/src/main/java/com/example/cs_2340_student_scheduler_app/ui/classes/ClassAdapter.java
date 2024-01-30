@@ -15,7 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragment;
@@ -33,7 +36,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     private Fragment from;
 
     private ArrayList<Integer> index;
-    private ArrayList<Assignment> assignmentList;
+    //private ArrayList<Assignment> assignmentList;
 
     public ClassAdapter(Context context, ArrayList<Classes> classList, Fragment from, ArrayList<Integer> index) {
         this.index = index;
@@ -93,10 +96,10 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
                 if (!confirmed[0]) {
                     deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
                 } else {
-                    adapter.loadData();
-                    filterAssignments(adapter.assignmentList);
+                    adapter.loadDB();
+//                    filterAssignments(adapter.assignmentList);
                     adapter.classList.remove(getAdapterPosition());
-                    adapter.saveData();
+                    adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
                 confirmed[0] = !confirmed[0];
@@ -132,26 +135,23 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
         }
     }
 
-    private void saveData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = gson.toJson(classList);
-        String json2 = gson.toJson(assignmentList);
-        editor.putString("courses", json);
-        editor.putString("assignments", json2);
-        editor.apply();
+        user.classes = gson.toJson(classList);
+        userDao.updateUsers(user);
     }
 
-    private void loadData() {
-        Context context = from.getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("assignments", null);
-        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
-        assignmentList = gson.fromJson(json, type);
-        if (assignmentList == null) {
-            assignmentList = new ArrayList<>();
+        String json = user.classes;
+        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        classList = gson.fromJson(json, type);
+        if (classList == null) {
+            classList = new ArrayList<>();
         }
     }
 }

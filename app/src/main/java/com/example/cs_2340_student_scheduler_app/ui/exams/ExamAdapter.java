@@ -16,8 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
+import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.exams.Exam;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -87,7 +91,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder>{
                     confirmed[0] = true;
                 } else {
                     adapter.examList.remove(getAdapterPosition());
-                    adapter.saveData();
+                    adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
             });
@@ -106,23 +110,11 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder>{
         }
     }
 
-    private void loadData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("exams", null);
-        Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
-        examList = gson.fromJson(json, type);
-        if (examList == null) {
-            examList = new ArrayList<>();
-        }
-    }
-
-    private void saveData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(examList);
-        editor.putString("exams", json);
-        editor.apply();
+        user.exams = gson.toJson(examList);
+        userDao.updateUsers(user);
     }
 }
