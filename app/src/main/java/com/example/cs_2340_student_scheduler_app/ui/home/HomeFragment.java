@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o+ index.get(0));
                 if (!todoList.isEmpty())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default", "default"));
+                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
                     sortDueDate();
