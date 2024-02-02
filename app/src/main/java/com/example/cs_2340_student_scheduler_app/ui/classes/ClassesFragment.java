@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
 import com.google.gson.Gson;
@@ -48,7 +51,7 @@ public class ClassesFragment extends Fragment {
                 new ViewModelProvider(this).get(ClassesViewModel.class);
 
         index.add(0);
-        loadData();
+        loadDB();
         binding = FragmentClassesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -73,8 +76,8 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                classList.add(new Classes("default", "default", "default", "default", "monday", "default", "default", "default"));
-                saveData();
+                classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
+                updateDB();
                 index.set(0, classList.size() - 1);
                 ClassesFragmentDirections.ActionNavigationDashboardToNavigationAddClass action = ClassesFragmentDirections.actionNavigationDashboardToNavigationAddClass(index.get(0));
                 NavHostFragment.findNavController(ClassesFragment.this).navigate(action);
@@ -93,7 +96,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setInstructor(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -104,7 +107,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Time Name: " +o + index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setTime(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -115,7 +118,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Course Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -126,7 +129,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setDays(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -137,7 +140,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setSection(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -148,7 +151,7 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setLocation(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -159,31 +162,29 @@ public class ClassesFragment extends Fragment {
                 System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty())
                     classList.set(index.get(0), classList.get(index.get(0))).setRoomNumber(o.toString());
-                saveData();
+                updateDB();
             }
         });
     }
 
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
+        user.classes = gson.toJson(classList);
+        userDao.updateUsers(user);
+    }
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
         classList = gson.fromJson(json, type);
         if (classList == null) {
             classList = new ArrayList<>();
         }
-    }
-
-    private void saveData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(classList);
-        editor.putString("courses", json);
-        editor.apply();
     }
 
     @Override

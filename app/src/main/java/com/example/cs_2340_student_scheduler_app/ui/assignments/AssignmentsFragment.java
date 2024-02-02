@@ -17,7 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
@@ -51,12 +54,16 @@ public class AssignmentsFragment extends Fragment {
         ClassesViewModel classesViewModel =
                 new ViewModelProvider(this).get(ClassesViewModel.class);
         index.add(0);
+//        User user = new User();
+//        MainActivity.db.userDao().insertAll(user);
 
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        loadData();
+        //loadData();
+        loadDB();
         Assignment.setContext(getActivity());
-        Assignment.loadData();
+        //Assignment.loadData();
+
         RecyclerView assignmentCards = root.findViewById(R.id.idAssignments);
 
         assignmentAdapter = new AssignmentAdapter(getContext(), assignmentList, this, index, false);
@@ -88,7 +95,9 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000", false));
-                saveData();
+                //saveData();
+                updateDB();
+                System.out.println();
                 index.set(0, assignmentList.size() - 1);
                 int indexPar = index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
@@ -108,7 +117,8 @@ public class AssignmentsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!assignmentList.isEmpty())
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
-                saveData();
+               // saveData();
+                updateDB();
             }
         });
 
@@ -119,7 +129,8 @@ public class AssignmentsFragment extends Fragment {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
                 if (!assignmentList.isEmpty())
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
-                saveData();
+               // saveData();
+                updateDB();
             }
         });
 
@@ -129,14 +140,16 @@ public class AssignmentsFragment extends Fragment {
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!assignmentList.isEmpty())
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default", "default"));
+                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                saveData();
+               // saveData();
+                updateDB();
+
                 assignmentAdapter.notifyDataSetChanged();
             }
         });
@@ -162,7 +175,8 @@ public class AssignmentsFragment extends Fragment {
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                //saveData();
+                updateDB();
                 assignmentAdapter.notifyDataSetChanged();
             }
 
@@ -171,28 +185,6 @@ public class AssignmentsFragment extends Fragment {
 
             }
         });
-    }
-
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("assignments", null);
-        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
-        assignmentList = gson.fromJson(json, type);
-        if (assignmentList == null) {
-            assignmentList = new ArrayList<>();
-        }
-    }
-
-    private void saveData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(assignmentList);
-        editor.putString("assignments", json);
-        editor.apply();
     }
 
     public void sortDueDate() {
@@ -205,6 +197,26 @@ public class AssignmentsFragment extends Fragment {
                     assignmentList.set(j + 1, temp);
                 }
             }
+        }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.assignments = gson.toJson(assignmentList);
+        userDao.updateUsers(user);
+    }
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.assignments;
+        Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();
+        assignmentList = gson.fromJson(json, type);
+        if (assignmentList == null) {
+            assignmentList = new ArrayList<>();
         }
     }
 
