@@ -190,7 +190,7 @@ public class HomeFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.tasks = gson.toJson(todoList);
         userDao.updateUsers(user);
@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.tasks;
         Type type = new TypeToken<ArrayList<Home>>() {}.getType();

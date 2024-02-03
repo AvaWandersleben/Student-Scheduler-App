@@ -112,7 +112,7 @@ public class AssignmentMenuFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
@@ -132,27 +132,10 @@ public class AssignmentMenuFragment extends Fragment {
             System.out.println(a);
         }
     }
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
-        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
-        Type type2 = new TypeToken<ArrayList<Assignment>>() {}.getType();
-        String json2 = sharedPreferences.getString("assignments", null);
-        assignments = gson.fromJson(json2, type2);
-        classList = gson.fromJson(json, type);
-        if (classList == null) {
-            classList = new ArrayList<>();
-        }
-        if (assignments == null) {
-            assignments = new ArrayList<>();
-        }
-    }
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.assignments = gson.toJson(assignments);
         userDao.updateUsers(user);

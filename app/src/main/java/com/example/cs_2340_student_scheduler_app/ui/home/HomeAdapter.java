@@ -146,7 +146,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.tasks = gson.toJson(todoList);
         userDao.updateUsers(user);

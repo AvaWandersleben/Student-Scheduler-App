@@ -200,7 +200,7 @@ public class AssignmentsFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.assignments = gson.toJson(assignmentList);
         userDao.updateUsers(user);
@@ -208,7 +208,7 @@ public class AssignmentsFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.assignments;
         Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();

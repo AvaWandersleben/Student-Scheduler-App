@@ -56,8 +56,8 @@ public class ExamsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ClassesViewModel classesViewModel =
-                new ViewModelProvider(this).get(ClassesViewModel.class);
+        ExamViewModel examsViewModel =
+                new ViewModelProvider(this).get(ExamViewModel.class);
         index.add(0);
 
         binding = FragmentExamsBinding.inflate(inflater, container, false);
@@ -177,7 +177,7 @@ public class ExamsFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.exams = gson.toJson(examList);
         userDao.updateUsers(user);
@@ -185,7 +185,7 @@ public class ExamsFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();

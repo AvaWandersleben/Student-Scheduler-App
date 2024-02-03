@@ -137,7 +137,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.classes = gson.toJson(classList);
         userDao.updateUsers(user);
@@ -145,7 +145,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();

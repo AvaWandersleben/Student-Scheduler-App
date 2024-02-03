@@ -108,7 +108,7 @@ public class ExamMenuFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
@@ -120,7 +120,7 @@ public class ExamMenuFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.exams = gson.toJson(examList);
         userDao.updateUsers(user);
