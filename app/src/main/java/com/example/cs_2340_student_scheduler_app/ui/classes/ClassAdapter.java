@@ -94,7 +94,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
 
             deleteButt.setOnClickListener(view -> {
                 if (!confirmed[0]) {
-                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    deleteButt.setImageResource(R.drawable.ic_stat_name);
                 } else {
                     adapter.loadDB();
 //                    filterAssignments(adapter.assignmentList);

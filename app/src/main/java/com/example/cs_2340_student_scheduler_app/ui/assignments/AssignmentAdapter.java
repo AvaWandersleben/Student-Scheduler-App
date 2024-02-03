@@ -89,7 +89,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
             deleteButt.setOnClickListener(view -> {
                 if (!confirmed[0]) {
                     confirmed[0] = true;
-                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    deleteButt.setImageResource(R.drawable.ic_stat_name);
                 } else {
                     adapter.assignmentList.remove(getAdapterPosition());
                     //adapter.saveData();
