@@ -1,10 +1,6 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +16,10 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private final Context context;
@@ -135,18 +128,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
     }
 
-//    private void saveData() {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(todoList);
-//        editor.putString("assignments", json);
-//        editor.apply();
-//    }
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.tasks = gson.toJson(todoList);
         userDao.updateUsers(user);

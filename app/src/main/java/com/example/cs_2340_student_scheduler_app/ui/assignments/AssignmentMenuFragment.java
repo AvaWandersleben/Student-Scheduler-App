@@ -1,10 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +50,6 @@ public class AssignmentMenuFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadDB();
-        System.out.println(assignments.size());
         int index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
@@ -112,7 +106,7 @@ public class AssignmentMenuFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
@@ -126,33 +120,11 @@ public class AssignmentMenuFragment extends Fragment {
         if (assignments == null) {
             assignments = new ArrayList<>();
         }
-        System.out.println(json2);
-        System.out.println("Assignments: ");
-        for (Assignment a : assignments) {
-            System.out.println(a);
-        }
-    }
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
-        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
-        Type type2 = new TypeToken<ArrayList<Assignment>>() {}.getType();
-        String json2 = sharedPreferences.getString("assignments", null);
-        assignments = gson.fromJson(json2, type2);
-        classList = gson.fromJson(json, type);
-        if (classList == null) {
-            classList = new ArrayList<>();
-        }
-        if (assignments == null) {
-            assignments = new ArrayList<>();
-        }
     }
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.assignments = gson.toJson(assignments);
         userDao.updateUsers(user);

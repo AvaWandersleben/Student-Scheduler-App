@@ -1,9 +1,6 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
-import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +20,11 @@ import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
-import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 import androidx.navigation.NavController;
@@ -51,18 +46,14 @@ public class AssignmentsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ClassesViewModel classesViewModel =
-                new ViewModelProvider(this).get(ClassesViewModel.class);
+        AssignmentsViewModel classesViewModel =
+                new ViewModelProvider(this).get(AssignmentsViewModel.class);
         index.add(0);
-//        User user = new User();
-//        MainActivity.db.userDao().insertAll(user);
 
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        //loadData();
         loadDB();
         Assignment.setContext(getActivity());
-        //Assignment.loadData();
 
         RecyclerView assignmentCards = root.findViewById(R.id.idAssignments);
 
@@ -95,7 +86,6 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 updateDB();
-                System.out.println();
                 index.set(0, assignmentList.size());
                 int indexPar = index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
@@ -112,10 +102,8 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
-               // saveData();
                 updateDB();
             }
         });
@@ -124,10 +112,8 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o + index.get(0));
                 if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
-               // saveData();
                 updateDB();
             }
         });
@@ -136,16 +122,13 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o+ index.get(0));
                 if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-               // saveData();
                 updateDB();
 
                 assignmentAdapter.notifyDataSetChanged();
@@ -168,12 +151,10 @@ public class AssignmentsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (assignmentList.isEmpty() || index.get(0) < assignmentList.size()) return;
                 if (position == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                //saveData();
                 updateDB();
                 assignmentAdapter.notifyDataSetChanged();
             }
@@ -200,7 +181,7 @@ public class AssignmentsFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.assignments = gson.toJson(assignmentList);
         userDao.updateUsers(user);
@@ -208,7 +189,7 @@ public class AssignmentsFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.assignments;
         Type type = new TypeToken<ArrayList<Assignment>>() {}.getType();

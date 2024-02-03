@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/exams" />
 
+    <item
+        android:id="@+id/navigation_users"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/user" />
+
 </menu>

@@ -87,4 +87,11 @@
             android:name="index"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_users"
+        android:name="com.example.cs_2340_student_scheduler_app.ui.users.UserFragment"
+        android:label="User"
+        tools:layout="@layout/fragment_user" >
+    </fragment>
 </navigation>
