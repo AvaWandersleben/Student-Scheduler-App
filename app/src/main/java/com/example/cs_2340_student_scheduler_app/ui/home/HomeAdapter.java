@@ -1,10 +1,6 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +16,11 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
@@ -100,7 +94,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
                 } else {
                     adapter.todoList.remove(getAdapterPosition());
-                    //adapter.saveData();
+
                     adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
@@ -119,7 +113,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     adapter.todoList.remove(getAdapterPosition());
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
-                //adapter.saveData();
+
                 adapter.updateDB();
             });
         }
@@ -130,24 +124,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    private void loadData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("tasks", null);
-        Type type = new TypeToken<ArrayList<Home>>() {}.getType();
-        todoList = gson.fromJson(json, type);
-        if (todoList == null) {
-            todoList = new ArrayList<>();
-        }
-    }
 
-    private void saveData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
-        String json = gson.toJson(todoList);
-        editor.putString("tasks", json);
-        editor.apply();
+        user.tasks = gson.toJson(todoList);
+        userDao.updateUsers(user);
     }
 
     public void updateDB() {

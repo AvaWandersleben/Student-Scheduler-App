@@ -1,10 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +21,6 @@ import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -55,14 +49,14 @@ public class HomeMenuFragment extends Fragment{
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //loadData();
         loadDB();
-        System.out.println(todo.size());
-        int index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
+        int index = HomeMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
-        title.setText(todo.get(index).getTitle());
-        dueDate.setText(todo.get(index).getDueDate());
+        if (index < todo.size()) {
+            title.setText(todo.get(index).getTitle());
+            dueDate.setText(todo.get(index).getDueDate());
+        }
 
         Spinner spinner = binding.classSpinner;
         ArrayList<String> classNames = new ArrayList<>();
@@ -73,8 +67,8 @@ public class HomeMenuFragment extends Fragment{
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner.setSelection(todo.get(index).getClassNameLoc());
-        System.out.println(todo.get(index).getClassNameLoc());
+        if (index < todo.size())
+            spinner.setSelection(todo.get(index).getClassNameLoc());
 
 
 
@@ -84,6 +78,8 @@ public class HomeMenuFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
+                todo.add(new Home(new Classes(), "default", "01/01/2000", false));
+                updateDB();
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();
                 String associatedCourseStr = spinner.getSelectedItem().toString();
@@ -110,7 +106,7 @@ public class HomeMenuFragment extends Fragment{
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
@@ -124,28 +120,14 @@ public class HomeMenuFragment extends Fragment{
         if (todo == null) {
             todo = new ArrayList<>();
         }
-        System.out.println(json2);
-        System.out.println("Tasks: ");
-        for (Home a : todo) {
-            System.out.println(a);
-        }
     }
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
-        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
-        Type type2 = new TypeToken<ArrayList<Home>>() {}.getType();
-        String json2 = sharedPreferences.getString("todo", null);
-        todo = gson.fromJson(json2, type2);
-        classList = gson.fromJson(json, type);
-        if (classList == null) {
-            classList = new ArrayList<>();
-        }
-        if (todo == null) {
-            todo = new ArrayList<>();
-        }
+        user.tasks = gson.toJson(todo);
+        userDao.updateUsers(user);
     }
 
     @Override

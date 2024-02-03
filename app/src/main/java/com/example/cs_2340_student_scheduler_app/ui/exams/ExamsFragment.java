@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +17,8 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsBinding;
-import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
-import com.example.cs_2340_student_scheduler_app.ui.exams.ExamAdapter;
-import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
-import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -56,8 +44,8 @@ public class ExamsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ClassesViewModel classesViewModel =
-                new ViewModelProvider(this).get(ClassesViewModel.class);
+        ExamViewModel examsViewModel =
+                new ViewModelProvider(this).get(ExamViewModel.class);
         index.add(0);
 
         binding = FragmentExamsBinding.inflate(inflater, container, false);
@@ -86,9 +74,8 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                examList.add(new Exam());
                 updateDB();
-                index.set(0, examList.size() - 1);
+                index.set(0, examList.size());
                 int indexPar = index.get(0);
                 ExamsFragmentDirections.ActionNavigationExamsToNavigationExamsMenuFragment action = ExamsFragmentDirections.actionNavigationExamsToNavigationExamsMenuFragment(indexPar);
                 NavHostFragment.findNavController(ExamsFragment.this).navigate(action);
@@ -104,8 +91,7 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setTitle(o.toString());
                 updateDB();
             }
@@ -115,8 +101,7 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o + index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setDate(o.toString());
                 updateDB();
             }
@@ -126,8 +111,7 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setTime(o.toString());
                 updateDB();
             }
@@ -137,8 +121,7 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
                 updateDB();
             }
@@ -160,7 +143,6 @@ public class ExamsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (examList.isEmpty()) return;
                 if (position == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
@@ -178,7 +160,7 @@ public class ExamsFragment extends Fragment {
 
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         user.exams = gson.toJson(examList);
         userDao.updateUsers(user);
@@ -186,7 +168,7 @@ public class ExamsFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();

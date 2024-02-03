@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 import androidx.navigation.NavController;
@@ -61,7 +56,6 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        //loadData();
         loadDB();
         Home.setContext(getActivity());
         //Home.loadData();
@@ -96,11 +90,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                todoList.add(new Home(new Classes(), "default", "01/01/2000", false));
-                //saveData();
-                updateDB();
-                System.out.println();
-                index.set(0, todoList.size() - 1);
+                index.set(0, todoList.size());
                 int indexPar = index.get(0);
                 HomeFragmentDirections.ActionNavigationHomeToNavigationHomeMenuFragment action = HomeFragmentDirections.actionNavigationHomeToNavigationHomeMenuFragment(indexPar);
                 NavHostFragment.findNavController(HomeFragment.this).navigate(action);
@@ -116,10 +106,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o+ index.get(0));
-                if (!todoList.isEmpty())
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setTitle(o.toString());
-                //saveData();
                 updateDB();
             }
         });
@@ -128,10 +116,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o + index.get(0));
-                if (!todoList.isEmpty())
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setDueDate(o.toString());
-                // saveData();
                 updateDB();
             }
         });
@@ -140,18 +126,14 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o+ index.get(0));
-                if (!todoList.isEmpty())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
+                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                //saveData();
                 updateDB();
-
                 homeAdapter.notifyDataSetChanged();
             }
         });
@@ -170,14 +152,12 @@ public class HomeFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (todoList.isEmpty()) return;
+                if (todoList.isEmpty() || index.get(0) >= todoList.size()) return;
                 if (position == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                //saveData();
                 updateDB();
                 homeAdapter.notifyDataSetChanged();
             }

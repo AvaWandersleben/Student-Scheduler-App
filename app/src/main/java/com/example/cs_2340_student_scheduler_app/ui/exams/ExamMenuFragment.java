@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +18,7 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
-import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
-import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragment;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragmentArgs;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,14 +53,18 @@ public class ExamMenuFragment extends Fragment {
         timeText = binding.examTime;
         dateText = binding.editDueDate;
         locText = binding.editLoc;
-        titleText.setText(examList.get(index).getTitle());
-        timeText.setText(examList.get(index).getTime());
-        dateText.setText(examList.get(index).getDate());
-        locText.setText(examList.get(index).getLocation());
+        if (index < examList.size()) {
+            titleText.setText(examList.get(index).getTitle());
+            timeText.setText(examList.get(index).getTime());
+            dateText.setText(examList.get(index).getDate());
+            locText.setText(examList.get(index).getLocation());
+        }
         binding.submitButtEdit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                examList.add(new Exam());
+                updateDB();
                 String titleNameStr = titleText.getText().toString();
                 String dateTextStr = dateText.getText().toString();
                 String timeTextStr = timeText.getText().toString();
@@ -104,7 +99,7 @@ public class ExamMenuFragment extends Fragment {
 
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.exams;
         Type type = new TypeToken<ArrayList<Exam>>() {}.getType();
@@ -112,6 +107,14 @@ public class ExamMenuFragment extends Fragment {
         if (examList == null) {
             examList = new ArrayList<>();
         }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(MainActivity.currUser);
+        Gson gson = new Gson();
+        user.exams = gson.toJson(examList);
+        userDao.updateUsers(user);
     }
 
     @Override

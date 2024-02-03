@@ -13,9 +13,6 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAll();
 
-    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-    List<User> loadAllByIds(int[] userIds);
-
     @Query("SELECT * FROM user WHERE uid IN (:id)")
     User getUser(int id);
 
@@ -27,4 +24,7 @@ public interface UserDao {
 
     @Update
     void updateUsers(User... users);
+
+    @Query("SELECT COUNT(*) FROM user")
+    int userCount();
 }
