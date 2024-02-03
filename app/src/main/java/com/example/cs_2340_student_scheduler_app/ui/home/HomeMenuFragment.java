@@ -21,10 +21,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
@@ -32,7 +33,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+
 public class HomeMenuFragment extends Fragment{
+
     private FragmentHomeMenuBinding binding;
     private EditText title;
     private EditText dueDate;
@@ -51,8 +55,10 @@ public class HomeMenuFragment extends Fragment{
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData();
-        int index = HomeMenuFragmentArgs.fromBundle(getArguments()).getIndex();
+        //loadData();
+        loadDB();
+        System.out.println(todo.size());
+        int index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
         title.setText(todo.get(index).getTitle());
@@ -102,6 +108,28 @@ public class HomeMenuFragment extends Fragment{
     }
 
 
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.classes;
+        Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
+        Type type2 = new TypeToken<ArrayList<Home>>() {}.getType();
+        String json2 = user.tasks;
+        todo = gson.fromJson(json2, type2);
+        classList = gson.fromJson(json, type);
+        if (classList == null) {
+            classList = new ArrayList<>();
+        }
+        if (todo == null) {
+            todo = new ArrayList<>();
+        }
+        System.out.println(json2);
+        System.out.println("Tasks: ");
+        for (Home a : todo) {
+            System.out.println(a);
+        }
+    }
     private void loadData() {
         Context context = getActivity();
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);

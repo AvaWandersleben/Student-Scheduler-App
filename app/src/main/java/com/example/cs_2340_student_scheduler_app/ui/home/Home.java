@@ -7,13 +7,15 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
 public class Home {
     private static ArrayList<Classes> classList = new ArrayList<>();
     private Classes associatedClass;
@@ -21,9 +23,8 @@ public class Home {
     private String dueDate;
     private boolean completed;
     private static Context context;
-
     public Home(Classes associatedClass, String title, String dueDate, boolean completed) {
-        loadData();
+        loadDB();
         this.associatedClass = associatedClass;
         this.title = title;
         this.dueDate = dueDate;
@@ -104,10 +105,21 @@ public class Home {
         return null;
     }
 
-    public static void loadData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    @Override
+    public String toString() {
+        return "Home{" +
+                "associatedClass=" + associatedClass +
+                ", title='" + title + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                ", completed=" + completed +
+                '}';
+    }
+
+    public static void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
+        String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
         classList = gson.fromJson(json, type);
         if (classList == null) {

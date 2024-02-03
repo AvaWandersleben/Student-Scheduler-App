@@ -17,8 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeBinding;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
+import com.example.cs_2340_student_scheduler_app.ui.home.HomeAdapter;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,11 +40,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeFragment extends Fragment {
-
     private FloatingActionButton buttonAdd;
     private ArrayList<Home> todoList = new ArrayList<>();
 
     private ArrayList<Integer> index = new ArrayList<>();
+
     public static HomeAdapter homeAdapter;
 
 
@@ -51,12 +56,16 @@ public class HomeFragment extends Fragment {
         ClassesViewModel classesViewModel =
                 new ViewModelProvider(this).get(ClassesViewModel.class);
         index.add(0);
+        //        User user = new User();
+        //        MainActivity.db.userDao().insertAll(user);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        loadData();
+        //loadData();
+        loadDB();
         Home.setContext(getActivity());
-        Home.loadData();
+        //Home.loadData();
+
         RecyclerView homeCards = root.findViewById(R.id.idAssignments);
 
         homeAdapter = new HomeAdapter(getContext(), todoList, this, index, false);
@@ -71,26 +80,14 @@ public class HomeFragment extends Fragment {
 
         binding.incompleteSwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             if (isChecked) {
-                ArrayList<Home> completedList = getCompletedHome(todoList);
-                HomeAdapter completedAdapter = new HomeAdapter(getContext(), completedList, this, index, false);
-                homeCards.setAdapter(completedAdapter);
+                HomeAdapter incompleteAdapter = new HomeAdapter(getContext(), getIncompleteHome(todoList), this, index, false);
+                homeCards.setAdapter(incompleteAdapter);
             } else {
                 homeCards.setAdapter(homeAdapter);
             }
-            homeAdapter.notifyDataSetChanged();
         }));
         return root;
 
-    }
-
-    public ArrayList<Home> getCompletedHome(ArrayList<Home> arr) {
-        ArrayList<Home> completedList = new ArrayList<>();
-        for (Home home : arr) {
-            if (home.isCompleted()) {
-                completedList.add(home);
-            }
-        }
-        return completedList;
     }
 
     private void setUpAddButton(View root) {
@@ -100,7 +97,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 todoList.add(new Home(new Classes(), "default", "01/01/2000", false));
-                saveData();
+                //saveData();
+                updateDB();
+                System.out.println();
                 index.set(0, todoList.size() - 1);
                 int indexPar = index.get(0);
                 HomeFragmentDirections.ActionNavigationHomeToNavigationHomeMenuFragment action = HomeFragmentDirections.actionNavigationHomeToNavigationHomeMenuFragment(indexPar);
@@ -112,18 +111,18 @@ public class HomeFragment extends Fragment {
     private void updateChanges(HomeAdapter homeAdapter) {
         NavController navController = NavHostFragment.findNavController(this);
 
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("titleEdit").observe(getViewLifecycleOwner(), new Observer() {
 
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("titleEdit").observe(getViewLifecycleOwner(), new Observer() {
 
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o+ index.get(0));
                 if (!todoList.isEmpty())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setTitle(o.toString());
-                saveData();
+                //saveData();
+                updateDB();
             }
         });
-
 
         navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dueDateEdit").observe(getViewLifecycleOwner(), new Observer() {
 
@@ -132,7 +131,8 @@ public class HomeFragment extends Fragment {
                 System.out.println("Set Task Name: " +o + index.get(0));
                 if (!todoList.isEmpty())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setDueDate(o.toString());
-                saveData();
+                // saveData();
+                updateDB();
             }
         });
 
@@ -142,14 +142,16 @@ public class HomeFragment extends Fragment {
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o+ index.get(0));
                 if (!todoList.isEmpty())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
+                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                //saveData();
+                updateDB();
+
                 homeAdapter.notifyDataSetChanged();
             }
         });
@@ -175,7 +177,8 @@ public class HomeFragment extends Fragment {
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                //saveData();
+                updateDB();
                 homeAdapter.notifyDataSetChanged();
             }
 
@@ -184,28 +187,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-    }
-
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("todo", null);
-        Type type = new TypeToken<ArrayList<Home>>() {}.getType();
-        todoList = gson.fromJson(json, type);
-        if (todoList == null) {
-            todoList = new ArrayList<>();
-        }
-    }
-
-    private void saveData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(todoList);
-        editor.putString("todo", json);
-        editor.apply();
     }
 
     public void sortDueDate() {
@@ -218,6 +199,26 @@ public class HomeFragment extends Fragment {
                         todoList.set(j + 1, temp);
                     }
             }
+        }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.tasks = gson.toJson(todoList);
+        userDao.updateUsers(user);
+    }
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.tasks;
+        Type type = new TypeToken<ArrayList<Home>>() {}.getType();
+        todoList = gson.fromJson(json, type);
+        if (todoList == null) {
+            todoList = new ArrayList<>();
         }
     }
 
@@ -236,7 +237,7 @@ public class HomeFragment extends Fragment {
     public ArrayList<Home> getIncompleteHome(ArrayList<Home> arr) {
         ArrayList<Home> newArr = new ArrayList<>();
         for (int i = 0; i < arr.size(); i++) {
-            if (!arr.get(i).isCompleted()) {
+            if (arr.get(i).isCompleted()) {
                 newArr.add(arr.get(i));
             }
         }
