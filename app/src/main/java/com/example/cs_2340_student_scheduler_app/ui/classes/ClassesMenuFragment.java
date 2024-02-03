@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.classes;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +19,6 @@ import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -80,7 +74,6 @@ public class ClassesMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                System.out.println("clicked");
                 classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
                 updateDB();
                 String courseNameStr = courseName.getText().toString();

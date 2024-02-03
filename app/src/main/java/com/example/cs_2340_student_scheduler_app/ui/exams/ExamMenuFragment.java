@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +18,7 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesMenuBinding;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
-import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
-import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragment;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragmentArgs;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

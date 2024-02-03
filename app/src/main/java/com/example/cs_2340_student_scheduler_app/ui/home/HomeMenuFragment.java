@@ -1,10 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +21,6 @@ import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeMenuBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragmentArgs;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

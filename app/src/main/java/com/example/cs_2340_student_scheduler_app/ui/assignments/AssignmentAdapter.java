@@ -1,10 +1,6 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +19,6 @@ import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.ViewHolder>{
@@ -92,7 +85,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
                 } else {
                     adapter.assignmentList.remove(getAdapterPosition());
-                    //adapter.saveData();
                     adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
@@ -111,7 +103,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                     adapter.assignmentList.remove(getAdapterPosition());
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
-                //adapter.saveData();
                 adapter.updateDB();
             });
         }

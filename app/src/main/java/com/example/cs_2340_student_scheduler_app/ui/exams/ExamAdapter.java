@@ -1,10 +1,6 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.app.Notification;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +16,9 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
-import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
-import com.example.cs_2340_student_scheduler_app.ui.exams.Exam;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder>{

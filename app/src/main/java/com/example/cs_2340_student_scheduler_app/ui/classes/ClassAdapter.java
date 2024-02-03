@@ -116,23 +116,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
             this.adapter = adapter;
             return this;
         }
-
-        public void filterAssignments(ArrayList<Assignment> assignments){
-            assignments.removeIf(new Predicate<Assignment>() {
-                @Override
-                public boolean test(Assignment assignment) {
-                    Classes course = assignment.getAssociatedClass();
-                    System.out.println(course.getCourseName());
-                    System.out.println(adapter.classList.contains(course));
-                    return !adapter.classList.contains(course);
-                }
-            });
-            System.out.println("*");
-            for (Assignment a : assignments) {
-                System.out.println(a.getClassName());
-            }
-            //AssignmentsFragment.assignmentAdapter.notifyDataSetChanged();
-        }
     }
 
     public void updateDB() {

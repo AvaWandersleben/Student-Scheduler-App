@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +18,6 @@ import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,7 +25,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 import androidx.navigation.NavController;
@@ -119,7 +113,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o+ index.get(0));
                 if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setTitle(o.toString());
                 updateDB();
@@ -131,7 +124,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o + index.get(0));
                 if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setDueDate(o.toString());
                 updateDB();
@@ -142,11 +134,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Task Name: " +o+ index.get(0));
                 if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
@@ -172,7 +162,6 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (todoList.isEmpty() || index.get(0) >= todoList.size()) return;
                 if (position == 0) {
-                    System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();

@@ -1,9 +1,5 @@
 package com.example.cs_2340_student_scheduler_app.ui.classes;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +9,6 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentClassesBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentsFragmentDirections;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -93,7 +88,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setInstructor(o.toString());
                 updateDB();
@@ -104,7 +98,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Time Name: " +o + index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setTime(o.toString());
                 updateDB();
@@ -115,7 +108,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Course Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setCourseName(o.toString());
                 updateDB();
@@ -126,7 +118,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setDays(o.toString());
                 updateDB();
@@ -137,7 +128,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setSection(o.toString());
                 updateDB();
@@ -148,7 +138,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setLocation(o.toString());
                 updateDB();
@@ -159,7 +148,6 @@ public class ClassesFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                System.out.println("Set Instruct Name: " +o+ index.get(0));
                 if (!classList.isEmpty() && index.get(0) < classList.size())
                     classList.set(index.get(0), classList.get(index.get(0))).setRoomNumber(o.toString());
                 updateDB();

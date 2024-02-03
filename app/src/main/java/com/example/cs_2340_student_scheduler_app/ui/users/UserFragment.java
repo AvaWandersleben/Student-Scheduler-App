@@ -13,10 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cs_2340_student_scheduler_app.MainActivity;
-import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentUserBinding;
-import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
