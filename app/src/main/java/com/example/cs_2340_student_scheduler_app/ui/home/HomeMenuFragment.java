@@ -21,7 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.ManipulateData;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeMenuBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.AssignmentMenuFragment;
@@ -51,12 +54,14 @@ public class HomeMenuFragment extends Fragment{
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadData();
+        loadDB();
         int index = HomeMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
-        title.setText(todo.get(index).getTitle());
-        dueDate.setText(todo.get(index).getDueDate());
+        if (index < todo.size()) {
+            title.setText(todo.get(index).getTitle());
+            dueDate.setText(todo.get(index).getDueDate());
+        }
 
         Spinner spinner = binding.classSpinner;
         ArrayList<String> classNames = new ArrayList<>();
@@ -67,8 +72,8 @@ public class HomeMenuFragment extends Fragment{
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner.setSelection(todo.get(index).getClassNameLoc());
-        System.out.println(todo.get(index).getClassNameLoc());
+        if (index < todo.size())
+            spinner.setSelection(todo.get(index).getClassNameLoc());
 
 
 
@@ -78,6 +83,8 @@ public class HomeMenuFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
+                todo.add(new Home(new Classes(), "default", "01/01/2000", false));
+                updateDB();
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();
                 String associatedCourseStr = spinner.getSelectedItem().toString();
@@ -102,14 +109,14 @@ public class HomeMenuFragment extends Fragment{
     }
 
 
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
+        String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();
         Type type2 = new TypeToken<ArrayList<Home>>() {}.getType();
-        String json2 = sharedPreferences.getString("todo", null);
+        String json2 = user.tasks;
         todo = gson.fromJson(json2, type2);
         classList = gson.fromJson(json, type);
         if (classList == null) {
@@ -118,6 +125,14 @@ public class HomeMenuFragment extends Fragment{
         if (todo == null) {
             todo = new ArrayList<>();
         }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.tasks = gson.toJson(todo);
+        userDao.updateUsers(user);
     }
 
     @Override

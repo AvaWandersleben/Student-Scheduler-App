@@ -94,11 +94,9 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                assignmentList.add(new Assignment(new Classes(), "default", "01/01/2000", false));
-                //saveData();
                 updateDB();
                 System.out.println();
-                index.set(0, assignmentList.size() - 1);
+                index.set(0, assignmentList.size());
                 int indexPar = index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
                 NavHostFragment.findNavController(AssignmentsFragment.this).navigate(action);
@@ -115,7 +113,7 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!assignmentList.isEmpty())
+                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
                // saveData();
                 updateDB();
@@ -127,7 +125,7 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
-                if (!assignmentList.isEmpty())
+                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
                // saveData();
                 updateDB();
@@ -139,7 +137,7 @@ public class AssignmentsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!assignmentList.isEmpty())
+                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
                     assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
@@ -168,7 +166,7 @@ public class AssignmentsFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (assignmentList.isEmpty()) return;
+                if (assignmentList.isEmpty() || index.get(0) < assignmentList.size()) return;
                 if (position == 0) {
                     System.out.println("due date");
                     sortDueDate();

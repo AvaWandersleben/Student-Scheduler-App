@@ -65,19 +65,24 @@ public class ClassesMenuFragment extends Fragment {
         locationText = binding.editTextLocation;
         roomText = binding.editTextRoom;
 
-        timeText.setText(classList.get(index).getTime());
-        instructName.setText(classList.get(index).getInstructor());
-        courseName.setText(classList.get(index).getCourseName());
-        daysText.setText(classList.get(index).getDays());
-        sectionText.setText(classList.get(index).getSection());
-        locationText.setText(classList.get(index).getLocation());
-        roomText.setText(classList.get(index).getRoomNumber());
+        if (index < classList.size()) {
+            timeText.setText(classList.get(index).getTime());
+            instructName.setText(classList.get(index).getInstructor());
+            courseName.setText(classList.get(index).getCourseName());
+            daysText.setText(classList.get(index).getDays());
+            sectionText.setText(classList.get(index).getSection());
+            locationText.setText(classList.get(index).getLocation());
+            roomText.setText(classList.get(index).getRoomNumber());
+        }
 
 
         binding.submitButt.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                System.out.println("clicked");
+                classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
+                updateDB();
                 String courseNameStr = courseName.getText().toString();
                 String instructNameStr = instructName.getText().toString();
                 String timeTextStr = timeText.getText().toString();
@@ -126,6 +131,14 @@ public class ClassesMenuFragment extends Fragment {
         if (classList == null) {
             classList = new ArrayList<>();
         }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.classes = gson.toJson(classList);
+        userDao.updateUsers(user);
     }
 
     @Override

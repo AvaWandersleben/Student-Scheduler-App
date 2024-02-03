@@ -133,15 +133,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
         }
     }
 
-    private void saveData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(assignmentList);
-        editor.putString("assignments", json);
-        editor.apply();
-    }
-
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
         User user = userDao.getUser(0);

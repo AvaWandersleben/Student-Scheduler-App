@@ -62,14 +62,18 @@ public class ExamMenuFragment extends Fragment {
         timeText = binding.examTime;
         dateText = binding.editDueDate;
         locText = binding.editLoc;
-        titleText.setText(examList.get(index).getTitle());
-        timeText.setText(examList.get(index).getTime());
-        dateText.setText(examList.get(index).getDate());
-        locText.setText(examList.get(index).getLocation());
+        if (index < examList.size()) {
+            titleText.setText(examList.get(index).getTitle());
+            timeText.setText(examList.get(index).getTime());
+            dateText.setText(examList.get(index).getDate());
+            locText.setText(examList.get(index).getLocation());
+        }
         binding.submitButtEdit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                examList.add(new Exam());
+                updateDB();
                 String titleNameStr = titleText.getText().toString();
                 String dateTextStr = dateText.getText().toString();
                 String timeTextStr = timeText.getText().toString();
@@ -112,6 +116,14 @@ public class ExamMenuFragment extends Fragment {
         if (examList == null) {
             examList = new ArrayList<>();
         }
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        user.exams = gson.toJson(examList);
+        userDao.updateUsers(user);
     }
 
     @Override

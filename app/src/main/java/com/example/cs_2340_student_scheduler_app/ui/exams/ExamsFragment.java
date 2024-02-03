@@ -86,9 +86,8 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                examList.add(new Exam());
                 updateDB();
-                index.set(0, examList.size() - 1);
+                index.set(0, examList.size());
                 int indexPar = index.get(0);
                 ExamsFragmentDirections.ActionNavigationExamsToNavigationExamsMenuFragment action = ExamsFragmentDirections.actionNavigationExamsToNavigationExamsMenuFragment(indexPar);
                 NavHostFragment.findNavController(ExamsFragment.this).navigate(action);
@@ -105,7 +104,7 @@ public class ExamsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setTitle(o.toString());
                 updateDB();
             }
@@ -116,7 +115,7 @@ public class ExamsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o + index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setDate(o.toString());
                 updateDB();
             }
@@ -127,7 +126,7 @@ public class ExamsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setTime(o.toString());
                 updateDB();
             }
@@ -138,7 +137,7 @@ public class ExamsFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Assignment Name: " +o+ index.get(0));
-                if (!examList.isEmpty())
+                if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
                 updateDB();
             }

@@ -17,8 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
+import com.example.cs_2340_student_scheduler_app.User;
+import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentHomeBinding;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,7 +58,7 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        loadData();
+        loadDB();
         Home.setContext(getActivity());
         Home.loadData();
         RecyclerView homeCards = root.findViewById(R.id.idAssignments);
@@ -99,9 +103,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                todoList.add(new Home(new Classes(), "default", "01/01/2000", false));
-                saveData();
-                index.set(0, todoList.size() - 1);
+                index.set(0, todoList.size());
                 int indexPar = index.get(0);
                 HomeFragmentDirections.ActionNavigationHomeToNavigationHomeMenuFragment action = HomeFragmentDirections.actionNavigationHomeToNavigationHomeMenuFragment(indexPar);
                 NavHostFragment.findNavController(HomeFragment.this).navigate(action);
@@ -118,9 +120,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o+ index.get(0));
-                if (!todoList.isEmpty())
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setTitle(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -130,9 +132,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o + index.get(0));
-                if (!todoList.isEmpty())
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setDueDate(o.toString());
-                saveData();
+                updateDB();
             }
         });
 
@@ -141,7 +143,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 System.out.println("Set Task Name: " +o+ index.get(0));
-                if (!todoList.isEmpty())
+                if (!todoList.isEmpty() && index.get(0) < todoList.size())
                     todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     System.out.println("due date");
@@ -149,7 +151,7 @@ public class HomeFragment extends Fragment {
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                updateDB();
                 homeAdapter.notifyDataSetChanged();
             }
         });
@@ -168,14 +170,14 @@ public class HomeFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (todoList.isEmpty()) return;
+                if (todoList.isEmpty() || index.get(0) >= todoList.size()) return;
                 if (position == 0) {
                     System.out.println("due date");
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
-                saveData();
+                updateDB();
                 homeAdapter.notifyDataSetChanged();
             }
 
@@ -186,26 +188,24 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void loadData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("todo", null);
+        user.tasks = gson.toJson(todoList);
+        userDao.updateUsers(user);
+    }
+
+    public void loadDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
+        Gson gson = new Gson();
+        String json = user.tasks;
         Type type = new TypeToken<ArrayList<Home>>() {}.getType();
         todoList = gson.fromJson(json, type);
         if (todoList == null) {
             todoList = new ArrayList<>();
         }
-    }
-
-    private void saveData() {
-        Context context = getActivity();
-        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(todoList);
-        editor.putString("todo", json);
-        editor.apply();
     }
 
     public void sortDueDate() {
