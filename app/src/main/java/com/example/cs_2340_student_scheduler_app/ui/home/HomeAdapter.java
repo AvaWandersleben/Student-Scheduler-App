@@ -16,12 +16,14 @@ import com.example.cs_2340_student_scheduler_app.MainActivity;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
+
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final Context context;
     private ArrayList<Home> todoList;
     private Fragment from;
@@ -47,33 +49,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull HomeAdapter.ViewHolder holder, int position) {
         Home model = todoList.get(position);
-        if (!model.isCompleted() || !deletingComplete) {
-            holder.itemView.setVisibility(View.VISIBLE);
-            holder.title.setText(model.getTitle());
-            holder.dueDate.setText(model.getDueDate());
-            holder.associatedClass.setText(model.getClassName());
-            holder.completedSwitch.setChecked(model.isCompleted());
-        } else {
+        holder.title.setText(model.getTitle());
+        holder.dueDate.setText(model.getDueDate());
+        holder.associatedClass.setText(model.getClassName());
+        holder.completedSwitch.setChecked(model.isCompleted());
+        if (deletingComplete && !model.isCompleted()) {
             holder.itemView.setVisibility(View.GONE);
             holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        } else {
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (deletingComplete) {
-            int count = 0;
-            for (Home home : todoList) {
-                if (!home.isCompleted()) {
-                    count++;
-                }
-            }
-            return count;
-        } else {
-            return todoList.size();
-        }
+        return todoList.size();
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView dueDate;
@@ -100,6 +94,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
                 } else {
                     adapter.todoList.remove(getAdapterPosition());
+
                     adapter.updateDB();
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
@@ -118,6 +113,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     adapter.todoList.remove(getAdapterPosition());
                     adapter.notifyItemRemoved(getAdapterPosition());
                 }
+
                 adapter.updateDB();
             });
         }
@@ -129,9 +125,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     }
 
 
+
     public void updateDB() {
         UserDao userDao = MainActivity.db.userDao();
         User user = userDao.getUser(MainActivity.currUser);
+        Gson gson = new Gson();
+        user.tasks = gson.toJson(todoList);
+        userDao.updateUsers(user);
+    }
+
+    public void updateDB() {
+        UserDao userDao = MainActivity.db.userDao();
+        User user = userDao.getUser(0);
         Gson gson = new Gson();
         user.tasks = gson.toJson(todoList);
         userDao.updateUsers(user);

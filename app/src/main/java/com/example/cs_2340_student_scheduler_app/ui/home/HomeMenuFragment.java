@@ -27,7 +27,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+
 public class HomeMenuFragment extends Fragment{
+
     private FragmentHomeMenuBinding binding;
     private EditText title;
     private EditText dueDate;

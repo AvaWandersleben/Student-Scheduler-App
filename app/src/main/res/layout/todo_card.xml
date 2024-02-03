@@ -12,7 +12,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background"
         android:padding="4dp">
 
         <TextView
@@ -62,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="28dp"
             android:clickable="true"
             android:contentDescription="TODO"
             app:fabSize="mini"
@@ -86,7 +85,7 @@
             android:id="@+id/completedSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="264dp"
+            android:layout_marginStart="248dp"
             android:text="Important"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -95,15 +94,16 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <FrameLayout
-            android:background="#FF0000"
             android:layout_width="4dp"
             android:layout_height="match_parent"
+            android:background="#FF0000"
             ndroid:ignore="MissingConstraints" />
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dueDate"
             app:layout_constraintTop_toTopOf="parent" />
