@@ -1,12 +1,17 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
+
+import java.util.ArrayList;
 
 public class Exam {
+    private static ArrayList<Classes> classList = new ArrayList<>();
     private String title;
     private String date;
     private String location;
     private String time;
+    private Classes associatedClass;
 
     public Exam() {
         title = "default";
@@ -15,11 +20,20 @@ public class Exam {
         time = "2:00";
     }
 
-    public Exam(String title, String date, String location, String time) {
+    public Exam(String title, String date, String location, String time, Classes associatedClass) {
         this.title = title;
         this.date = date;
         this.location = location;
         this.time = time;
+        this.associatedClass = associatedClass;
+    }
+
+    public Classes getAssociatedClass() {
+        return associatedClass;
+    }
+
+    public void setAssociatedClass(Classes associatedClass) {
+        this.associatedClass = associatedClass;
     }
 
     public String getDate() {
@@ -52,6 +66,13 @@ public class Exam {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getClassNameLoc() {
+        for (Classes c : classList) {
+            System.out.println(c.getCourseName());
+        }
+        return classList.indexOf(associatedClass);
     }
 
     public int compareDate(Exam other) {

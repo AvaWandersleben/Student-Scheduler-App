@@ -9,12 +9,12 @@
     <string name="butAddText">Add Class</string>
     <string name="editButton">Edit</string>
     <string name="submitButtClass">Submit</string>
-    <string name="instructName">Instructor Name</string>
+    <string name="instructName">Instructor Name:</string>
     <string name="classTime">Class Time:</string>
     <string name="className">Class Name:</string>
     <string name="editTextName"></string>
-    <string name="class_name">Class Name</string>
-    <string name="due_date">Due Date</string>
+    <string name="class_name">Class Name:</string>
+    <string name="due_date">Due Date:</string>
     <string name="add_assignment">Add Assignment</string>
     <string name="add_class">Add Class</string>
     <string name="assignment_title">Assignment Title:</string>
@@ -36,4 +36,5 @@
     <string name="tasks_title">Tasks</string>
     <string name="user">User</string>
     <string name="select_user">Select User</string>
+    <string name="classStr">Class:</string>
 </resources>

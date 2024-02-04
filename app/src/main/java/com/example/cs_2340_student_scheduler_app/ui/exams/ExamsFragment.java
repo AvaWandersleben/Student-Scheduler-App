@@ -19,6 +19,7 @@ import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsBinding;
 import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -123,6 +124,16 @@ public class ExamsFragment extends Fragment {
             public void onChanged(Object o) {
                 if (!examList.isEmpty() && index.get(0) < examList.size())
                     examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
+                updateDB();
+            }
+        });
+
+        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("classEdit").observe(getViewLifecycleOwner(), new Observer() {
+
+            @Override
+            public void onChanged(Object o) {
+                if (!examList.isEmpty() && index.get(0) < examList.size())
+                    examList.set(index.get(0), examList.get(index.get(0))).setAssociatedClass(new Classes(o.toString()));
                 updateDB();
             }
         });

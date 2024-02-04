@@ -74,7 +74,8 @@ public class ClassesMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
+                if(index >= classList.size())
+                    classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
                 updateDB();
                 String courseNameStr = courseName.getText().toString();
                 String instructNameStr = instructName.getText().toString();

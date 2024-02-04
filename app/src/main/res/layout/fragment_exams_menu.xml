@@ -17,11 +17,21 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toBottomOf="@+id/instructorInstructions" />-->
 
+    <Spinner
+        android:id="@+id/class_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        app:layout_constraintBottom_toTopOf="@+id/locInstructions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/editTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/dateInstructions"
@@ -41,31 +51,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.723" />
+        app:layout_constraintVertical_bias="0.823" />
 
     <EditText
         android:id="@+id/editDueDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
         android:ems="10"
         android:inputType="date"
         android:text="@string/editTextName"
-        app:layout_constraintBottom_toTopOf="@+id/timeInstructions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateInstructions" />
 
     <TextView
         android:id="@+id/dateInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="80dp"
         android:text="@string/due_date_menu"
         android:textAllCaps="true"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editDueDate"
+        app:layout_constraintBottom_toTopOf="@+id/timeInstructions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -73,7 +82,7 @@
         android:id="@+id/timeInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="328dp"
+        android:layout_marginBottom="376dp"
         android:text="@string/time"
         android:textAllCaps="true"
         android:textSize="26sp"
@@ -87,7 +96,7 @@
         android:id="@+id/examTime"
         android:layout_width="175dp"
         android:layout_height="57dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,8 +112,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editLoc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/examTime" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editLoc"
@@ -123,6 +131,19 @@
         android:text="@string/submitButtClass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classStr"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@+id/class_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
     <!--        app:layout_constraintTop_toBottomOf="@+id/class_spinner" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,10 @@ public class Classes {
         }
     }
 
+    public Classes(String courseName) {
+        this.courseName = courseName;
+    }
+
     public String getTime() {
         return time;
     }

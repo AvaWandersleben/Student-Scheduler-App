@@ -28,31 +28,15 @@ public class MainActivity extends AppCompatActivity {
         try {
             User user = new User();
             user.uid = 0;
-            user.userName = "";
-            user.classes = "";
-            user.assignments = "";
-            user.exams = "";
-            user.tasks = "";
             MainActivity.db.userDao().insertAll(user);
         } catch (RuntimeException r) {
-            User oldUser = db.userDao().getUser(0);
-            db.userDao().delete(oldUser);
-            User user = new User();
-            user.uid = 0;
-            user.userName = "";
-            user.classes = "";
-            user.assignments = "";
-            user.exams = "";
-            user.tasks = "";
-            MainActivity.db.userDao().insertAll(user);
+
         }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_exams, R.id.navigation_users)
                 .build();

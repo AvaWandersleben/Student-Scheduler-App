@@ -66,7 +66,6 @@ public class Assignment {
     }
 
     public int getClassNameLoc() {
-        System.out.println("*");
         for (Classes c : classList) {
             System.out.println(c.getCourseName());
         }

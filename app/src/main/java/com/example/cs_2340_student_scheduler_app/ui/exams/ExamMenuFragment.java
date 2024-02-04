@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentExamsMenuBinding;
+import com.example.cs_2340_student_scheduler_app.ui.assignments.Assignment;
+import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
 import com.example.cs_2340_student_scheduler_app.ui.classes.ClassesMenuFragmentArgs;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +39,7 @@ public class ExamMenuFragment extends Fragment {
     private EditText locText;
 
     private ArrayList<Exam> examList;
+    private ArrayList<Classes> classList;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,16 +64,28 @@ public class ExamMenuFragment extends Fragment {
             dateText.setText(examList.get(index).getDate());
             locText.setText(examList.get(index).getLocation());
         }
+        Spinner spinner = binding.classSpinner;
+        ArrayList<String> classNames = new ArrayList<>();
+        for (Classes c : classList) {
+            classNames.add(c.getCourseName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, classNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        if (index < examList.size())
+            spinner.setSelection(examList.get(index).getClassNameLoc());
         binding.submitButtEdit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                examList.add(new Exam());
+                if(index >= examList.size())
+                    examList.add(new Exam());
                 updateDB();
                 String titleNameStr = titleText.getText().toString();
                 String dateTextStr = dateText.getText().toString();
                 String timeTextStr = timeText.getText().toString();
                 String locTextStr = locText.getText().toString();
+                String associatedCourseStr = spinner.getSelectedItem().toString();
                 boolean goodData = true;
                 if (!ManipulateData.validateDate(dateTextStr) ||
                         !ManipulateData.validateTime(timeTextStr)) {
@@ -80,6 +97,7 @@ public class ExamMenuFragment extends Fragment {
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("timeEdit", timeTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("dateEdit", dateTextStr);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("locEdit", locTextStr);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().set("classEdit", associatedCourseStr);
                 if (goodData) {
                     navController.popBackStack();
                 } else {
@@ -106,6 +124,12 @@ public class ExamMenuFragment extends Fragment {
         examList = gson.fromJson(json, type);
         if (examList == null) {
             examList = new ArrayList<>();
+        }
+        String json2 = user.classes;
+        Type type2 = new TypeToken<ArrayList<Classes>>() {}.getType();
+        classList = gson.fromJson(json2, type2);
+        if (classList == null) {
+            classList = new ArrayList<>();
         }
     }
 

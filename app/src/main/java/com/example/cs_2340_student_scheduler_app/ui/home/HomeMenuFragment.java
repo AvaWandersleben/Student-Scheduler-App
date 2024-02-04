@@ -78,7 +78,8 @@ public class HomeMenuFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
-                todo.add(new Home(new Classes(), "default", "01/01/2000", false));
+                if(index >= todo.size())
+                    todo.add(new Home(new Classes(), "default", "01/01/2000", false));
                 updateDB();
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();

@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(Object o) {
                 if (!todoList.isEmpty() && index.get(0) < todoList.size())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "default", "monday", "default", "default"));
+                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "Monday", "monday", "default", "default"));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     sortDueDate();
                 } else {

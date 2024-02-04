@@ -78,7 +78,8 @@ public class AssignmentMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                assignments.add(new Assignment(new Classes(), "default", "01/01/2000", false));
+                if(index >= assignments.size())
+                    assignments.add(new Assignment(new Classes(), "default", "01/01/2000", false));
                 updateDB();
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();
