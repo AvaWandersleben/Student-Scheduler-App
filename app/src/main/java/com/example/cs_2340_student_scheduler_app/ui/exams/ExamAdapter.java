@@ -78,7 +78,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder>{
             final boolean[] confirmed = {false};
             deleteButt.setOnClickListener(view -> {
                 if (!confirmed[0]) {
-                    deleteButt.setImageResource(R.drawable.ic_home_black_24dp);
+                    deleteButt.setImageResource(R.drawable.ic_stat_name);
                     confirmed[0] = true;
                 } else {
                     adapter.examList.remove(getAdapterPosition());

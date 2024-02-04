@@ -10,11 +10,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="4dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background"
-        >
+        android:background="#F3EEEA"
+        android:padding="4sp">
 
         <TextView
             android:id="@+id/assignTitle"
@@ -56,10 +55,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:contentDescription="TODO"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_delete"
-            android:contentDescription="TODO" />
+            app:srcCompat="@android:drawable/ic_delete" />
 
         <Button
             android:id="@+id/editButt"

@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F3EEEA">
 
-<!--    Leaving if classes requested later-->
-<!--    <Spinner-->
-<!--        android:id="@+id/class_spinner"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="48dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.511"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/instructorInstructions" />-->
+    <!--    Leaving if classes requested later-->
+    <!--    <Spinner-->
+    <!--        android:id="@+id/class_spinner"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="48dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.511"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/instructorInstructions" />-->
 
     <EditText
         android:id="@+id/editTitle"
@@ -122,6 +123,6 @@
         android:text="@string/submitButtClass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-<!--        app:layout_constraintTop_toBottomOf="@+id/class_spinner" />-->
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--        app:layout_constraintTop_toBottomOf="@+id/class_spinner" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
