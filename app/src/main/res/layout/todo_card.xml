@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:ndroid="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            ndroid:ignore="MissingConstraints" />
+            />
 
         <TextView
             android:id="@+id/dueDate"
@@ -98,12 +99,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deleteBut"
             app:layout_constraintVertical_bias="1.0" />
-
-        <FrameLayout
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="#FF0000"
-            ndroid:ignore="MissingConstraints" />
 
         <CheckBox
             android:id="@+id/checkBox"

@@ -53,14 +53,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.dueDate.setText(model.getDueDate());
         holder.associatedClass.setText(model.getClassName());
         holder.completedSwitch.setChecked(model.isCompleted());
-        if (deletingComplete && !model.isCompleted()) {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-        } else {
-            holder.itemView.setVisibility(View.VISIBLE);
-            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
-
     }
 
     @Override

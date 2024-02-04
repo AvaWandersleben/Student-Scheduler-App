@@ -48,8 +48,8 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ClassesViewModel classesViewModel =
-                new ViewModelProvider(this).get(ClassesViewModel.class);
+        HomeViewModel homeViewModel =
+                new ViewModelProvider(this).get(HomeViewModel.class);
         index.add(0);
         //        User user = new User();
         //        MainActivity.db.userDao().insertAll(user);
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
         Home.setContext(getActivity());
         //Home.loadData();
 
-        RecyclerView homeCards = root.findViewById(R.id.idAssignments);
+        RecyclerView homeCards = root.findViewById(R.id.idTodo);
 
         homeAdapter = new HomeAdapter(getContext(), todoList, this, index, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
