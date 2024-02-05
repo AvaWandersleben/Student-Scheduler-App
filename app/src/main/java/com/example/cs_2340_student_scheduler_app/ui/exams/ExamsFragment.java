@@ -42,6 +42,8 @@ public class ExamsFragment extends Fragment {
 
     private FragmentExamsBinding binding;
 
+    private ExamAdapter examAdapter;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ExamsFragment extends Fragment {
         Assignment.loadDB();
         RecyclerView examCards = root.findViewById(R.id.idExams);
 
-        ExamAdapter examAdapter = new ExamAdapter(getContext(), examList, this, index);
+        examAdapter = new ExamAdapter(getContext(), examList, this, index);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         examCards.setLayoutManager(linearLayoutManager);
@@ -92,49 +94,8 @@ public class ExamsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                if (!examList.isEmpty() && index.get(0) < examList.size())
-                    examList.set(index.get(0), examList.get(index.get(0))).setTitle(o.toString());
                 updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dateEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!examList.isEmpty() && index.get(0) < examList.size())
-                    examList.set(index.get(0), examList.get(index.get(0))).setDate(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("timeEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!examList.isEmpty() && index.get(0) < examList.size())
-                    examList.set(index.get(0), examList.get(index.get(0))).setTime(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("locEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!examList.isEmpty() && index.get(0) < examList.size())
-                    examList.set(index.get(0), examList.get(index.get(0))).setLocation(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("classEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!examList.isEmpty() && index.get(0) < examList.size())
-                    examList.set(index.get(0), examList.get(index.get(0))).setAssociatedClass(new Classes(o.toString()));
-                updateDB();
+                examAdapter.notifyItemChanged(index.get(0));
             }
         });
     }

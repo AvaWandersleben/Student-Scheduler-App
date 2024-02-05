@@ -64,10 +64,6 @@ public class Home {
     }
 
     public int getClassNameLoc() {
-        System.out.println("*");
-        for (Classes c : classList) {
-            System.out.println(c.getCourseName());
-        }
         return classList.indexOf(associatedClass);
     }
 

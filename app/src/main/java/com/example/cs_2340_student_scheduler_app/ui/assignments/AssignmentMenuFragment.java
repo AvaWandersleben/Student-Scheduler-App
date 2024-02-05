@@ -88,12 +88,13 @@ public class AssignmentMenuFragment extends Fragment {
                 if (!ManipulateData.validateDate(dueDateStr)) {
                     goodData = false;
                 }
-
-                NavController navController = NavHostFragment.findNavController(AssignmentMenuFragment.this);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("dueDateEdit", dueDateStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("classEdit", associatedCourseStr);
                 if (goodData) {
+                    NavController navController = NavHostFragment.findNavController(AssignmentMenuFragment.this);
+                    assignments.get(index).setTitle(titleStr);
+                    assignments.get(index).setDueDate(dueDateStr);
+                    assignments.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+                    updateDB();
+                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
                     navController.popBackStack();
                 } else {
                     String message = "Date must be mm/dd/yyyy format.";

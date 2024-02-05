@@ -92,7 +92,7 @@ public class Classes {
                 dayStr += ",";
             }
         }
-        return dayStr;
+        return dayStr.substring(0, dayStr.length() - 1);
     }
 
     public boolean contains (DayOfWeek[] arr, int day) {

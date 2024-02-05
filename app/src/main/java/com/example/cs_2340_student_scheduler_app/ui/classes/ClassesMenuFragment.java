@@ -74,8 +74,6 @@ public class ClassesMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if(index >= classList.size())
-                    classList.add(new Classes("default", "default", "default", "monday", "default", "default", "default"));
                 updateDB();
                 String courseNameStr = courseName.getText().toString();
                 String instructNameStr = instructName.getText().toString();
@@ -89,16 +87,19 @@ public class ClassesMenuFragment extends Fragment {
                 !ManipulateData.validateTime(timeTextStr)) {
                     goodData = false;
                 }
-
-                NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("courseEdit", courseNameStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("timeEdit", timeTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("instructorEdit", instructNameStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("daysEdit", daysTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("sectionEdit", sectionTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("roomEdit", roomTextStr);
                 if (goodData) {
+                    if(index >= classList.size())
+                        classList.add(new Classes());
+                    classList.get(index).setLocation(locationTextStr);
+                    classList.get(index).setDays(daysTextStr);
+                    classList.get(index).setTime(timeTextStr);
+                    classList.get(index).setRoomNumber(roomTextStr);
+                    classList.get(index).setInstructor(instructNameStr);
+                    classList.get(index).setCourseName(courseNameStr);
+                    classList.get(index).setSection(sectionTextStr);
+                    updateDB();
+                    NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
+                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
                     navController.popBackStack();
                 } else {
                     String message = "";

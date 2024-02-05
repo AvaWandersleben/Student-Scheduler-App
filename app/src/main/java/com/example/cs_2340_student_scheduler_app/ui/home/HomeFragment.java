@@ -101,40 +101,18 @@ public class HomeFragment extends Fragment {
     private void updateChanges(HomeAdapter homeAdapter) {
         NavController navController = NavHostFragment.findNavController(this);
 
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("titleEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!todoList.isEmpty() && index.get(0) < todoList.size())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setTitle(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dueDateEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!todoList.isEmpty() && index.get(0) < todoList.size())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setDueDate(o.toString());
-                updateDB();
-            }
-        });
-
         navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("classEdit").observe(getViewLifecycleOwner(), new Observer() {
 
             @Override
             public void onChanged(Object o) {
                 if (!todoList.isEmpty() && index.get(0) < todoList.size())
-                    todoList.set(index.get(0), todoList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "Monday", "monday", "default", "default"));
+                    homeAdapter.notifyItemChanged(index.get(0));
                 if (binding.sortSpinner.getSelectedItemPosition() == 0) {
                     sortDueDate();
                 } else {
                     sortCourseName();
                 }
                 updateDB();
-                homeAdapter.notifyDataSetChanged();
             }
         });
     }

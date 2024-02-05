@@ -48,6 +48,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
     @NonNull
     @Override
     public ClassAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        updateDB();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_card, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
@@ -96,7 +97,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder>{
                 if (!confirmed[0]) {
                     deleteButt.setImageResource(R.drawable.ic_stat_name);
                 } else {
-                    adapter.loadDB();
 //                    filterAssignments(adapter.assignmentList);
                     adapter.classList.remove(getAdapterPosition());
                     adapter.updateDB();

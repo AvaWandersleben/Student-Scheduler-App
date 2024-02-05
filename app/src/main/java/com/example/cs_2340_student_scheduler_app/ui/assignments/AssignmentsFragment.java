@@ -102,36 +102,10 @@ public class AssignmentsFragment extends Fragment {
 
             @Override
             public void onChanged(Object o) {
-                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setTitle(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("dueDateEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setDueDate(o.toString());
-                updateDB();
-            }
-        });
-
-        navController.getCurrentBackStackEntry().getSavedStateHandle().getLiveData("classEdit").observe(getViewLifecycleOwner(), new Observer() {
-
-            @Override
-            public void onChanged(Object o) {
-                if (!(assignmentList.isEmpty() || index.get(0) < assignmentList.size()))
-                    assignmentList.set(index.get(0), assignmentList.get(index.get(0))).setAssociatedClass(new Classes(o.toString(), "default", "default", "monday", "default", "default", "default"));
-                if (binding.sortSpinner.getSelectedItemPosition() == 0) {
-                    sortDueDate();
-                } else {
-                    sortCourseName();
+                if (!assignmentList.isEmpty() && index.get(0) < assignmentList.size()) {
+                    assignmentAdapter.notifyItemChanged(index.get(0));
                 }
                 updateDB();
-
-                assignmentAdapter.notifyDataSetChanged();
             }
         });
     }

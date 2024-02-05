@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F3EEEA"
+            android:background="?attr/colorPrimaryVariant"
             android:padding="4dp">
 
                 <TextView
@@ -97,6 +97,7 @@
                     android:contentDescription="TODO"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:backgroundTint="?attr/colorSecondary"
                     app:srcCompat="@android:drawable/ic_delete" />
 
                 <Button

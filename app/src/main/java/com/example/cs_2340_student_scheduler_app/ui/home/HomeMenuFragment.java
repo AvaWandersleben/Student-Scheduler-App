@@ -89,10 +89,12 @@ public class HomeMenuFragment extends Fragment{
                     goodData = false;
                 }
 
+                todo.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+                todo.get(index).setTitle(titleStr);
+                todo.get(index).setDueDate(dueDateStr);
+                updateDB();
                 NavController navController = NavHostFragment.findNavController(HomeMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("dueDateEdit", dueDateStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("classEdit", associatedCourseStr);
                 if (goodData) {
                     navController.popBackStack();
                 } else {

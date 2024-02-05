@@ -66,9 +66,7 @@ public class Assignment {
     }
 
     public int getClassNameLoc() {
-        for (Classes c : classList) {
-            System.out.println(c.getCourseName());
-        }
+        loadDB();
         return classList.indexOf(associatedClass);
     }
 
@@ -118,7 +116,7 @@ public class Assignment {
 
     public static void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
-        User user = userDao.getUser(0);
+        User user = userDao.getUser(MainActivity.currUser);
         Gson gson = new Gson();
         String json = user.classes;
         Type type = new TypeToken<ArrayList<Classes>>() {}.getType();

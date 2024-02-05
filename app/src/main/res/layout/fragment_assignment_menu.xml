@@ -1,96 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3EEEA">
+    android:background="?attr/colorSecondaryVariant">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSecondaryVariant">
 
-    <Spinner
-        android:id="@+id/class_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/instructorInstructions" />
+        <Spinner
+            android:id="@+id/class_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instructorInstructions" />
 
-    <EditText
-        android:id="@+id/editTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/timeInstructions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/timeInstructions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/classNameInstruct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/assignment_title"
-        android:textAllCaps="true"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.733" />
+        <TextView
+            android:id="@+id/classNameInstruct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/assignment_title"
+            android:textAllCaps="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.733" />
 
-    <EditText
-        android:id="@+id/editDueDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:ems="10"
-        android:inputType="date"
-        android:text="@string/editTextName"
-        app:layout_constraintBottom_toTopOf="@+id/instructorInstructions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/editDueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:ems="10"
+            android:inputType="date"
+            android:text="@string/editTextName"
+            app:layout_constraintBottom_toTopOf="@+id/instructorInstructions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/timeInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/due_date_menu"
-        android:textAllCaps="true"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editDueDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/timeInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/due_date_menu"
+            android:textAllCaps="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editDueDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/instructorInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/class_text"
-        android:textAllCaps="true"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.622" />
+        <TextView
+            android:id="@+id/instructorInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/class_text"
+            android:textAllCaps="true"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.622" />
 
-    <Button
-        android:id="@+id/submitButtEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/submitButtClass"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/class_spinner" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/submitButtEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submitButtClass"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/class_spinner" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

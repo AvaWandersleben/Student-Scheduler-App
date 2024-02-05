@@ -69,9 +69,6 @@ public class Exam {
     }
 
     public int getClassNameLoc() {
-        for (Classes c : classList) {
-            System.out.println(c.getCourseName());
-        }
         return classList.indexOf(associatedClass);
     }
 

@@ -92,12 +92,15 @@ public class ExamMenuFragment extends Fragment {
                     goodData = false;
                 }
 
+                examList.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+                examList.get(index).setTime(timeTextStr);
+                examList.get(index).setLocation(locTextStr);
+                examList.get(index).setTitle(titleNameStr);
+                examList.get(index).setDate(dateTextStr);
+                updateDB();
+
                 NavController navController = NavHostFragment.findNavController(ExamMenuFragment.this);
                 navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleNameStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("timeEdit", timeTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("dateEdit", dateTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("locEdit", locTextStr);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("classEdit", associatedCourseStr);
                 if (goodData) {
                     navController.popBackStack();
                 } else {
