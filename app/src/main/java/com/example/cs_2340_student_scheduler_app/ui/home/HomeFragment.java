@@ -195,7 +195,7 @@ public class HomeFragment extends Fragment {
     public ArrayList<Home> getIncompleteHome(ArrayList<Home> arr) {
         ArrayList<Home> newArr = new ArrayList<>();
         for (int i = 0; i < arr.size(); i++) {
-            if (arr.get(i).isCompleted()) {
+            if (!arr.get(i).isCompleted()) {
                 newArr.add(arr.get(i));
             }
         }
