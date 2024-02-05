@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "896816598474",
+    "project_id": "cs-2340-student-scheduler-app",
+    "storage_bucket": "cs-2340-student-scheduler-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896816598474:android:b39c583b23432ba4b75333",
+        "android_client_info": {
+          "package_name": "com.example.cs_2340_student_scheduler_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAMdBkmv9U7awO3erdxj8webgizjc2z-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

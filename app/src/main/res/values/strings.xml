@@ -31,4 +31,10 @@
         <item>Closest Due Date</item>
         <item>Class Name</item>
     </string-array>
+    <string name="select_timing">Select Timing</string>
+    <string-array name="timing_options">
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>1 day</item>
+    </string-array>
 </resources>
