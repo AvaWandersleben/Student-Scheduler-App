@@ -78,38 +78,40 @@ public class ExamMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if(index >= examList.size())
-                    examList.add(new Exam());
-                updateDB();
                 String titleNameStr = titleText.getText().toString();
                 String dateTextStr = dateText.getText().toString();
                 String timeTextStr = timeText.getText().toString();
                 String locTextStr = locText.getText().toString();
-                String associatedCourseStr = spinner.getSelectedItem().toString();
-                boolean goodData = true;
-                if (!ManipulateData.validateDate(dateTextStr) ||
-                        !ManipulateData.validateTime(timeTextStr)) {
-                    goodData = false;
+                String associatedCourseStr = "";
+                boolean goodData = false;
+                if (ManipulateData.validateDate(dateTextStr) &&
+                        ManipulateData.validateTime(timeTextStr)
+                        && spinner.getSelectedItem() == null) {
+                    goodData = true;
+                    associatedCourseStr = spinner.getSelectedItem().toString();
                 }
-
-                examList.get(index).setAssociatedClass(new Classes(associatedCourseStr));
-                examList.get(index).setTime(timeTextStr);
-                examList.get(index).setLocation(locTextStr);
-                examList.get(index).setTitle(titleNameStr);
-                examList.get(index).setDate(dateTextStr);
-                updateDB();
-
-                NavController navController = NavHostFragment.findNavController(ExamMenuFragment.this);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleNameStr);
                 if (goodData) {
+                    if(index >= examList.size())
+                        examList.add(new Exam());
+                    updateDB();
+                    examList.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+                    examList.get(index).setTime(timeTextStr);
+                    examList.get(index).setLocation(locTextStr);
+                    examList.get(index).setTitle(titleNameStr);
+                    examList.get(index).setDate(dateTextStr);
+                    updateDB();
+
+                    NavController navController = NavHostFragment.findNavController(ExamMenuFragment.this);
+                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleNameStr);
                     navController.popBackStack();
                 } else {
-                    String message = "";
+                    String message;
                     if (!ManipulateData.validateDate(dateTextStr)) {
-                        message += "Date must be mm/dd/yyyy format. ";
-                    }
-                    if (!ManipulateData.validateTime(timeTextStr)) {
-                        message += "Invalid time input.";
+                        message = "Date must be mm/dd/yyyy format. ";
+                    } else if (!ManipulateData.validateTime(timeTextStr)) {
+                        message = "Invalid time input.";
+                    } else {
+                        message = "Must Add A Class First";
                     }
                     Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
                     alert.show();

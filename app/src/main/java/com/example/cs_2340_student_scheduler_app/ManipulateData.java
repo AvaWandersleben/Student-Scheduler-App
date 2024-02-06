@@ -2,9 +2,9 @@ package com.example.cs_2340_student_scheduler_app;
 
 public class ManipulateData {
     public static boolean validateDate(String s) {
+        if (s.length() != 10) return false;
         if (s.charAt(2) != '/') return false;
         if (s.charAt(5) != '/') return false;
-        if (s.length() != 10) return false;
         if (Integer.parseInt(s.substring(0, 2)) > 12
                 || Integer.parseInt(s.substring(0, 2)) < 1) return false;
         if (s.charAt(2) != '/') return false;

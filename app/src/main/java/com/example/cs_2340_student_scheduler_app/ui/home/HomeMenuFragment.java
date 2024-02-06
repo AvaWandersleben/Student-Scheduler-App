@@ -78,27 +78,33 @@ public class HomeMenuFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
-                if(index >= todo.size())
-                    todo.add(new Home(new Classes(), "default", "01/01/2000", false));
-                updateDB();
                 String titleStr = title.getText().toString();
                 String dueDateStr = dueDate.getText().toString();
-                String associatedCourseStr = spinner.getSelectedItem().toString();
-                boolean goodData = true;
-                if (!ManipulateData.validateDate(dueDateStr)) {
-                    goodData = false;
+                String associatedCourseStr = "";
+                boolean goodData = false;
+                if (ManipulateData.validateDate(dueDateStr) && spinner.getSelectedItem() != null) {
+                    goodData = true;
+                    associatedCourseStr = spinner.getSelectedItem().toString();
                 }
 
-                todo.get(index).setAssociatedClass(new Classes(associatedCourseStr));
-                todo.get(index).setTitle(titleStr);
-                todo.get(index).setDueDate(dueDateStr);
-                updateDB();
-                NavController navController = NavHostFragment.findNavController(HomeMenuFragment.this);
-                navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
                 if (goodData) {
+                    if(index >= todo.size())
+                        todo.add(new Home(new Classes(), "default", "01/01/2000", false));
+                    updateDB();
+                    todo.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+                    todo.get(index).setTitle(titleStr);
+                    todo.get(index).setDueDate(dueDateStr);
+                    updateDB();
+                    NavController navController = NavHostFragment.findNavController(HomeMenuFragment.this);
+                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
                     navController.popBackStack();
                 } else {
-                    String message = "Date must be mm/dd/yyyy format.";
+                    String message;
+                    if (spinner.getSelectedItem() == null) {
+                        message = "Must Add A Class First";
+                    } else {
+                        message = "Date must be mm/dd/yyyy format.";
+                    }
                     Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
                     alert.show();
                 }

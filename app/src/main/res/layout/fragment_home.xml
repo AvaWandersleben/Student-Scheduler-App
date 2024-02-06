@@ -8,7 +8,6 @@
     android:background="?attr/colorSecondaryVariant"
     android:padding="0dp"
     app:contentInsetEnd="0dp"
-    android:layout_marginBottom="5dp"
     app:contentInsetStart="0dp">
 
     <Spinner
