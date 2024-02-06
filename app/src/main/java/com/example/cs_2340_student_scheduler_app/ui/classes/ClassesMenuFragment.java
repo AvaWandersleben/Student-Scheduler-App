@@ -74,7 +74,6 @@ public class ClassesMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                updateDB();
                 String courseNameStr = courseName.getText().toString();
                 String instructNameStr = instructName.getText().toString();
                 String timeTextStr = timeText.getText().toString();
@@ -90,6 +89,7 @@ public class ClassesMenuFragment extends Fragment {
                 if (goodData) {
                     if(index >= classList.size())
                         classList.add(new Classes());
+                    updateDB();
                     classList.get(index).setLocation(locationTextStr);
                     classList.get(index).setDays(daysTextStr);
                     classList.get(index).setTime(timeTextStr);
