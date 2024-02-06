@@ -67,11 +67,11 @@
             android:layout_marginEnd="28dp"
             android:clickable="true"
             android:contentDescription="TODO"
-            app:backgroundTint="#B0A695"
+            android:tint="?attr/colorSecondary"
+            app:backgroundTint="?attr/colorSecondary"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorSecondary"
             app:srcCompat="@android:drawable/ic_delete" />
 
         <Button
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="248dp"
-            android:text="Important"
+            android:text="Completed"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
