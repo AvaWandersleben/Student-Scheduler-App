@@ -86,7 +86,7 @@ public class ExamMenuFragment extends Fragment {
                 boolean goodData = false;
                 if (ManipulateData.validateDate(dateTextStr) &&
                         ManipulateData.validateTime(timeTextStr)
-                        && spinner.getSelectedItem() == null) {
+                        && spinner.getSelectedItem() != null) {
                     goodData = true;
                     associatedCourseStr = spinner.getSelectedItem().toString();
                 }
