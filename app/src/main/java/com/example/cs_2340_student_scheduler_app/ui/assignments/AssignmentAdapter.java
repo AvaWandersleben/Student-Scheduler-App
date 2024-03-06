@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -95,7 +96,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
                 adapter.index.set(0, getAdapterPosition());
                 int indexPar = adapter.index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
-                NavHostFragment.findNavController(adapter.from).navigate(action);
+                NavHostFragment.findNavController(adapter.from).navigate((NavDirections) action);
             });
 
             completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
