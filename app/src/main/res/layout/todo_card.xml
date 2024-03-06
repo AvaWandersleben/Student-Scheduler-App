@@ -101,14 +101,14 @@
             app:layout_constraintTop_toBottomOf="@+id/deleteBut"
             app:layout_constraintVertical_bias="1.0" />
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dueDate"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <CheckBox-->
+<!--            android:id="@+id/checkBox"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:buttonTint="#000000"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/dueDate"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,7 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -37,11 +40,44 @@ public class HomeMenuFragment extends Fragment{
 
     private ArrayList<Classes> classList;
     private ArrayList<Home> todo;
+    private DialogInterface.OnClickListener dialogClickListener;
+
+    private int index;
+
+    private Spinner spinner;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeMenuBinding.inflate(inflater, container, false);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                done();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialog.dismiss();
+
+                        }
+                    }
+                };
+                // on below line we are creating a builder variable for our alert dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                // on below line we are setting message for our dialog box.
+                builder.setMessage("Are you sure you are done editing?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return binding.getRoot();
 
 
@@ -50,7 +86,7 @@ public class HomeMenuFragment extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadDB();
-        int index = HomeMenuFragmentArgs.fromBundle(getArguments()).getIndex();
+        index = HomeMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
         dueDate = binding.editDueDate;
         if (index < todo.size()) {
@@ -58,7 +94,7 @@ public class HomeMenuFragment extends Fragment{
             dueDate.setText(todo.get(index).getDueDate());
         }
 
-        Spinner spinner = binding.classSpinner;
+        spinner = binding.classSpinner;
         ArrayList<String> classNames = new ArrayList<>();
         for (Classes c : classList) {
             classNames.add(c.getCourseName());
@@ -78,38 +114,44 @@ public class HomeMenuFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
-                String titleStr = title.getText().toString();
-                String dueDateStr = dueDate.getText().toString();
-                String associatedCourseStr = "";
-                boolean goodData = false;
-                if (ManipulateData.validateDate(dueDateStr) && spinner.getSelectedItem() != null) {
-                    goodData = true;
-                    associatedCourseStr = spinner.getSelectedItem().toString();
-                }
-
-                if (goodData) {
-                    if(index >= todo.size())
-                        todo.add(new Home(new Classes(), "default", "01/01/2000", false));
-                    updateDB();
-                    todo.get(index).setAssociatedClass(new Classes(associatedCourseStr));
-                    todo.get(index).setTitle(titleStr);
-                    todo.get(index).setDueDate(dueDateStr);
-                    updateDB();
-                    NavController navController = NavHostFragment.findNavController(HomeMenuFragment.this);
-                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
-                    navController.popBackStack();
-                } else {
-                    String message;
-                    if (spinner.getSelectedItem() == null) {
-                        message = "Must Add A Class First";
-                    } else {
-                        message = "Date must be mm/dd/yyyy format.";
-                    }
-                    Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-                    alert.show();
-                }
+                done();
             }
         });
+    }
+
+    public void done() {
+        String titleStr = title.getText().toString();
+        String dueDateStr = dueDate.getText().toString();
+        String associatedCourseStr = "";
+        boolean goodData = false;
+        if (ManipulateData.validateDate(dueDateStr) && spinner.getSelectedItem() != null && !titleStr.trim().isEmpty()) {
+            goodData = true;
+            associatedCourseStr = spinner.getSelectedItem().toString();
+        }
+
+        if (goodData) {
+            if(index >= todo.size())
+                todo.add(new Home(new Classes(), "default", "01/01/2000", false));
+            updateDB();
+            todo.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+            todo.get(index).setTitle(titleStr);
+            todo.get(index).setDueDate(dueDateStr);
+            updateDB();
+            NavController navController = NavHostFragment.findNavController(HomeMenuFragment.this);
+            navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleStr);
+            navController.popBackStack();
+        } else {
+            String message;
+            if (spinner.getSelectedItem() == null) {
+                message = "Must Add A Class First";
+            } else if (titleStr.trim().isEmpty()) {
+                message = "Title cannot be blank";
+            } else {
+                message = "Date must be mm/dd/yyyy format.";
+            }
+            Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+            alert.show();
+        }
     }
 
 

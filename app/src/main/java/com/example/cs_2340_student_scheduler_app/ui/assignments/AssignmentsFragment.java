@@ -20,6 +20,7 @@ import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;
 import com.example.cs_2340_student_scheduler_app.databinding.FragmentAssignmentsBinding;
 import com.example.cs_2340_student_scheduler_app.ui.classes.Classes;
+import com.example.cs_2340_student_scheduler_app.ui.exams.Exam;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,7 +91,7 @@ public class AssignmentsFragment extends Fragment {
                 index.set(0, assignmentList.size());
                 int indexPar = index.get(0);
                 AssignmentsFragmentDirections.ActionNavigationNotificationsToNavigationAssignmentMenuFragment action = AssignmentsFragmentDirections.actionNavigationNotificationsToNavigationAssignmentMenuFragment(indexPar);
-                NavHostFragment.findNavController(AssignmentsFragment.this).navigate(action);
+                NavHostFragment.findNavController(AssignmentsFragment.this).navigate((NavDirections) action);
             }
         });
     }
@@ -123,7 +125,7 @@ public class AssignmentsFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (assignmentList.isEmpty() || index.get(0) < assignmentList.size()) return;
+                if (assignmentList.isEmpty()) return;
                 if (position == 0) {
                     sortDueDate();
                 } else {
@@ -141,14 +143,24 @@ public class AssignmentsFragment extends Fragment {
     }
 
     public void sortDueDate() {
+//        for (int i = 0; i < assignmentList.size() - 1; i++) {
+//            for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
+//                if (j + 1 < assignmentList.size())
+//                if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
+//                    Assignment temp = assignmentList.get(j);
+//                    assignmentList.set(j, assignmentList.get(j + 1));
+//                    assignmentList.set(j + 1, temp);
+//                }
+//            }
+//        }
         for (int i = 0; i < assignmentList.size() - 1; i++) {
             for (int j = 0; j < assignmentList.size() - 1 - i; j++) {
                 if (j + 1 < assignmentList.size())
-                if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
-                    Assignment temp = assignmentList.get(j);
-                    assignmentList.set(j, assignmentList.get(j + 1));
-                    assignmentList.set(j + 1, temp);
-                }
+                    if (assignmentList.get(j).compareDate(assignmentList.get(j + 1)) > 0) {
+                        Assignment temp = assignmentList.get(j);
+                        assignmentList.set(j, assignmentList.get(j + 1));
+                        assignmentList.set(j + 1, temp);
+                    }
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.example.cs_2340_student_scheduler_app.ui.classes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -37,11 +40,41 @@ public class ClassesMenuFragment extends Fragment {
     private EditText roomText;
 
     private ArrayList<Classes> classList;
+    private int index;
+    private DialogInterface.OnClickListener dialogClickListener;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentClassesMenuBinding.inflate(inflater, container, false);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                done();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialog.dismiss();
+
+                        }
+                    }
+                };
+                // on below line we are creating a builder variable for our alert dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                // on below line we are setting message for our dialog box.
+                builder.setMessage("Are you sure you are done editing?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return binding.getRoot();
 
 
@@ -49,7 +82,7 @@ public class ClassesMenuFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
+        index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         loadDB();
         courseName = binding.editTextClassName;
         instructName = binding.editTextInstructorName;
@@ -74,46 +107,63 @@ public class ClassesMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                String courseNameStr = courseName.getText().toString();
-                String instructNameStr = instructName.getText().toString();
-                String timeTextStr = timeText.getText().toString();
-                String daysTextStr = daysText.getText().toString();
-                String sectionTextStr = sectionText.getText().toString();
-                String locationTextStr = locationText.getText().toString();
-                String roomTextStr = roomText.getText().toString();
-                boolean goodData = true;
-                if (!ManipulateData.validateDayOfWeek(daysTextStr) ||
-                !ManipulateData.validateTime(timeTextStr)) {
-                    goodData = false;
-                }
-                if (goodData) {
-                    if(index >= classList.size())
-                        classList.add(new Classes());
-                    updateDB();
-                    classList.get(index).setLocation(locationTextStr);
-                    classList.get(index).setDays(daysTextStr);
-                    classList.get(index).setTime(timeTextStr);
-                    classList.get(index).setRoomNumber(roomTextStr);
-                    classList.get(index).setInstructor(instructNameStr);
-                    classList.get(index).setCourseName(courseNameStr);
-                    classList.get(index).setSection(sectionTextStr);
-                    updateDB();
-                    NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
-                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
-                    navController.popBackStack();
-                } else {
-                    String message = "";
-                    if (!ManipulateData.validateDayOfWeek(daysTextStr)) {
-                        message += "Days of Week must be comma separated with no spaces. ";
-                    }
-                    if (!ManipulateData.validateTime(timeTextStr)) {
-                        message += "Invalid time input.";
-                    }
-                    Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-                    alert.show();
-                }
+                done();
             }
         });
+    }
+
+    private void done() {
+        String courseNameStr = courseName.getText().toString();
+        String instructNameStr = instructName.getText().toString();
+        String timeTextStr = timeText.getText().toString();
+        String daysTextStr = daysText.getText().toString();
+        String sectionTextStr = sectionText.getText().toString();
+        String locationTextStr = locationText.getText().toString();
+        String roomTextStr = roomText.getText().toString();
+        boolean goodData = true;
+        if (!ManipulateData.validateDayOfWeek(daysTextStr) ||
+                !ManipulateData.validateTime(timeTextStr) || locationTextStr.trim().isEmpty()
+                || courseNameStr.trim().isEmpty()
+                || instructNameStr.trim().isEmpty()
+                || sectionTextStr.trim().isEmpty()
+                || roomTextStr.trim().isEmpty()) {
+            goodData = false;
+        }
+        if (goodData) {
+            if(index >= classList.size())
+                classList.add(new Classes());
+            updateDB();
+            classList.get(index).setLocation(locationTextStr);
+            classList.get(index).setDays(daysTextStr);
+            classList.get(index).setTime(timeTextStr);
+            classList.get(index).setRoomNumber(roomTextStr);
+            classList.get(index).setInstructor(instructNameStr);
+            classList.get(index).setCourseName(courseNameStr);
+            classList.get(index).setSection(sectionTextStr);
+            updateDB();
+            NavController navController = NavHostFragment.findNavController(ClassesMenuFragment.this);
+            navController.getPreviousBackStackEntry().getSavedStateHandle().set("locationEdit", locationTextStr);
+            navController.popBackStack();
+        } else {
+            String message = "";
+            if (courseNameStr.trim().isEmpty()) {
+                message = "Course must have a name.";
+            } else if (!ManipulateData.validateDayOfWeek(daysTextStr)) {
+                message += "Days of Week must be comma separated with no spaces";
+            } else if (!ManipulateData.validateTime(timeTextStr)) {
+                message += "Invalid time input";
+            } else if (locationTextStr.trim().isEmpty()){
+                message = "Location cannot be blank";
+            } else if (instructNameStr.trim().isEmpty()) {
+                message = "Instructor cannot be blank";
+            } else if (sectionTextStr.trim().isEmpty()) {
+                message = "Section cannot be blank";
+            } else {
+                message = "Room cannot be blank";
+            }
+            Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+            alert.show();
+        }
     }
 
     public void loadDB() {

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs_2340_student_scheduler_app.MainActivity;
+import com.example.cs_2340_student_scheduler_app.ManipulateData;
 import com.example.cs_2340_student_scheduler_app.R;
 import com.example.cs_2340_student_scheduler_app.User;
 import com.example.cs_2340_student_scheduler_app.UserDao;

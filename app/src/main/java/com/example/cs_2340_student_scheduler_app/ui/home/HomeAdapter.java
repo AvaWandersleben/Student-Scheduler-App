@@ -1,11 +1,14 @@
 package com.example.cs_2340_student_scheduler_app.ui.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -97,6 +100,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 int indexPar = adapter.index.get(0);
                 HomeFragmentDirections.ActionNavigationHomeToNavigationHomeMenuFragment action = HomeFragmentDirections.actionNavigationHomeToNavigationHomeMenuFragment(indexPar);
                 NavHostFragment.findNavController(adapter.from).navigate(action);
+
             });
 
             completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -166,7 +166,7 @@ public class ExamsFragment extends Fragment {
     public void sortCourseName() {
         for (int i = 0; i < examList.size() - 1; i++) {
             for (int j = 0; j < examList.size() - 1 - i; j++) {
-                if (examList.get(j).getTitle().compareTo(examList.get(j + 1).getTitle()) > 0) {
+                if (examList.get(j).getClass().getName().compareTo(examList.get(j + 1).getClass().getName()) > 0) {
                     Exam temp = examList.get(j);
                     examList.set(j, examList.get(j + 1));
                     examList.set(j + 1, temp);

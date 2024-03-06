@@ -1,5 +1,7 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -40,11 +43,41 @@ public class ExamMenuFragment extends Fragment {
 
     private ArrayList<Exam> examList;
     private ArrayList<Classes> classList;
+    private int index;
+    private Spinner spinner;
+    private DialogInterface.OnClickListener dialogClickListener;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExamsMenuBinding.inflate(inflater, container, false);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                done();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialog.dismiss();
+
+                        }
+                    }
+                };
+                // on below line we are creating a builder variable for our alert dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                // on below line we are setting message for our dialog box.
+                builder.setMessage("Are you sure you are done editing?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return binding.getRoot();
 
 
@@ -52,7 +85,7 @@ public class ExamMenuFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        int index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
+        index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         loadDB();
         titleText = binding.editTitle;
         timeText = binding.examTime;
@@ -64,7 +97,7 @@ public class ExamMenuFragment extends Fragment {
             dateText.setText(examList.get(index).getDate());
             locText.setText(examList.get(index).getLocation());
         }
-        Spinner spinner = binding.classSpinner;
+        spinner = binding.classSpinner;
         ArrayList<String> classNames = new ArrayList<>();
         for (Classes c : classList) {
             classNames.add(c.getCourseName());
@@ -78,48 +111,56 @@ public class ExamMenuFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                String titleNameStr = titleText.getText().toString();
-                String dateTextStr = dateText.getText().toString();
-                String timeTextStr = timeText.getText().toString();
-                String locTextStr = locText.getText().toString();
-                String associatedCourseStr = "";
-                boolean goodData = false;
-                if (ManipulateData.validateDate(dateTextStr) &&
-                        ManipulateData.validateTime(timeTextStr)
-                        && spinner.getSelectedItem() != null) {
-                    goodData = true;
-                    associatedCourseStr = spinner.getSelectedItem().toString();
-                }
-                if (goodData) {
-                    if(index >= examList.size())
-                        examList.add(new Exam());
-                    updateDB();
-                    examList.get(index).setAssociatedClass(new Classes(associatedCourseStr));
-                    examList.get(index).setTime(timeTextStr);
-                    examList.get(index).setLocation(locTextStr);
-                    examList.get(index).setTitle(titleNameStr);
-                    examList.get(index).setDate(dateTextStr);
-                    updateDB();
-
-                    NavController navController = NavHostFragment.findNavController(ExamMenuFragment.this);
-                    navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleNameStr);
-                    navController.popBackStack();
-                } else {
-                    String message;
-                    if (!ManipulateData.validateDate(dateTextStr)) {
-                        message = "Date must be mm/dd/yyyy format. ";
-                    } else if (!ManipulateData.validateTime(timeTextStr)) {
-                        message = "Invalid time input.";
-                    } else {
-                        message = "Must Add A Class First";
-                    }
-                    Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
-                    alert.show();
-                }
+                done();
             }
         });
     }
 
+    public void done() {
+        String titleNameStr = titleText.getText().toString();
+        String dateTextStr = dateText.getText().toString();
+        String timeTextStr = timeText.getText().toString();
+        String locTextStr = locText.getText().toString();
+        String associatedCourseStr = "";
+        boolean goodData = false;
+        if (ManipulateData.validateDate(dateTextStr) &&
+                ManipulateData.validateTime(timeTextStr)
+                && spinner.getSelectedItem() != null && !titleNameStr.trim().isEmpty()
+                &&!locTextStr.trim().isEmpty()) {
+            goodData = true;
+            associatedCourseStr = spinner.getSelectedItem().toString();
+        }
+        if (goodData) {
+            if(index >= examList.size())
+                examList.add(new Exam());
+            updateDB();
+            examList.get(index).setAssociatedClass(new Classes(associatedCourseStr));
+            examList.get(index).setTime(timeTextStr);
+            examList.get(index).setLocation(locTextStr);
+            examList.get(index).setTitle(titleNameStr);
+            examList.get(index).setDate(dateTextStr);
+            updateDB();
+
+            NavController navController = NavHostFragment.findNavController(ExamMenuFragment.this);
+            navController.getPreviousBackStackEntry().getSavedStateHandle().set("titleEdit", titleNameStr);
+            navController.popBackStack();
+        } else {
+            String message;
+            if (!ManipulateData.validateDate(dateTextStr)) {
+                message = "Date must be mm/dd/yyyy format. ";
+            } else if (!ManipulateData.validateTime(timeTextStr)) {
+                message = "Invalid time input.";
+            } else if (titleNameStr.trim().isEmpty()) {
+                message = "Exam must have a name.";
+            } else if (locTextStr.trim().isEmpty()) {
+                message = "Location cannot be blank.";
+            } else {
+                message = "Must Add A Class First";
+            }
+            Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+            alert.show();
+        }
+    }
     public void loadDB() {
         UserDao userDao = MainActivity.db.userDao();
         User user = userDao.getUser(MainActivity.currUser);
