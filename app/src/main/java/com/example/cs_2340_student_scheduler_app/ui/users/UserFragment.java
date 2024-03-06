@@ -36,17 +36,8 @@ public class UserFragment extends Fragment {
 
         binding = FragmentUserBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        addButt = binding.addButt;
+        //addButt = binding.addButt;
         setUpSpinner();
-        addButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User user = new User();
-                user.uid = MainActivity.db.userDao().userCount();
-                MainActivity.db.userDao().insertAll(user);
-                setUpSpinner();
-            }
-        });
         return root;
 
     }
