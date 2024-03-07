@@ -44,7 +44,19 @@ public class UserFragment extends Fragment {
 
     private void setUpSpinner() {
         List<User> allUsers  = MainActivity.db.userDao().getAll();
+        //Lets say 10 users total
+        int count = 0;
         for (User u : allUsers) {
+            if (count >= 10) {
+                break;
+            }
+            users.add(u.uid + 1);
+            count++;
+        }
+        for (int i = count; i < 10; i++) {
+            User u = new User();
+            u.uid = count;
+            MainActivity.db.userDao().insertAll(u);
             users.add(u.uid + 1);
         }
         Spinner spinner = binding.userSpinner;

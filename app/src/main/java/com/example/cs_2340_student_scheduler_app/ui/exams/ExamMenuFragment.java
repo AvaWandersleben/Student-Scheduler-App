@@ -92,7 +92,7 @@ public class ExamMenuFragment extends Fragment {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                binding.timeInstructions.setText("EXAM TIME: " + hourOfDay + ":" + minute);
+                                binding.timeInstructions.setText("EXAM TIME: " +String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute));
 
                             }
                         }, hour, minute, false);

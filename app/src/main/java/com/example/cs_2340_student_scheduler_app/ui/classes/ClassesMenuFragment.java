@@ -116,7 +116,7 @@ public class ClassesMenuFragment extends Fragment {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                binding.textView2.setText("CLASS TIME: " + hourOfDay + ":" + minute);
+                                binding.textView2.setText("CLASS TIME: " + String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute));
 
                             }
                         }, hour, minute, false);
