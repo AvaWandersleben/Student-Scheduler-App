@@ -43,4 +43,5 @@
     <string name="days_of_the_week_comma_seperated_no_spaces">Days Of the Week(comma seperated, no spaces):</string>
     <string name="days_of_the_week">Days Of The Week:</string>
     <string name="tasks">Tasks:</string>
+    <string name="exam_date">EXAM DATE:</string>
 </resources>

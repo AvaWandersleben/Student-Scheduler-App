@@ -1,12 +1,14 @@
 package com.example.cs_2340_student_scheduler_app.ui.assignments;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,13 +32,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class AssignmentMenuFragment extends Fragment {
 
     private FragmentAssignmentMenuBinding binding;
     private EditText title;
-    private EditText dueDate;
 
     private ArrayList<Classes> classList;
     private ArrayList<Assignment> assignments;
@@ -74,6 +76,26 @@ public class AssignmentMenuFragment extends Fragment {
             }
         };
 
+        binding.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                binding.timeInstructions.setText("DUE DATE: " +
+                                        String.format("%02d", month + 1)+"/" + String.format("%02d", dayOfMonth) + "/" + year);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return binding.getRoot();
 
@@ -85,10 +107,9 @@ public class AssignmentMenuFragment extends Fragment {
         loadDB();
         index = AssignmentMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         title = binding.editTitle;
-        dueDate = binding.editDueDate;
         if (index < assignments.size()) {
             title.setText(assignments.get(index).getTitle());
-            dueDate.setText(assignments.get(index).getDueDate());
+            binding.timeInstructions.setText("DUE DATE: " + assignments.get(index).getDueDate());
         }
 
         spinner = binding.classSpinner;
@@ -118,7 +139,7 @@ public class AssignmentMenuFragment extends Fragment {
 
     private void done() {
         String titleStr = title.getText().toString();
-        String dueDateStr = dueDate.getText().toString();
+        String dueDateStr = binding.timeInstructions.getText().toString().replace("DUE DATE: ", "");
         String associatedCourseStr = "";
         boolean goodData = false;
         if (ManipulateData.validateDate(dueDateStr) && spinner.getSelectedItem() != null
@@ -144,7 +165,7 @@ public class AssignmentMenuFragment extends Fragment {
             } else if (titleStr.trim().isEmpty()) {
                 message = "Must have an assignment name.";
             } else {
-                message = "Date must be mm/dd/yyyy format.";
+                message = "Date invalid.";
             }
             Toast alert = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
             alert.show();

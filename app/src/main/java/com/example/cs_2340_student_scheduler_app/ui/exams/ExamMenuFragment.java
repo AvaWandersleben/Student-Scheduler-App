@@ -1,14 +1,18 @@
 package com.example.cs_2340_student_scheduler_app.ui.exams;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -32,13 +36,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ExamMenuFragment extends Fragment {
 
     private FragmentExamsMenuBinding binding;
     private EditText titleText;
-    private EditText dateText;
-    private EditText timeText;
     private EditText locText;
 
     private ArrayList<Exam> examList;
@@ -77,6 +80,45 @@ public class ExamMenuFragment extends Fragment {
             }
         };
 
+        binding.time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                binding.timeInstructions.setText("EXAM TIME: " + hourOfDay + ":" + minute);
+
+                            }
+                        }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        binding.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                binding.dateInstructions.setText("EXAM DATE: " +
+                                        String.format("%02d", month + 1)+"/" + String.format("%02d", dayOfMonth) + "/" + year);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return binding.getRoot();
 
@@ -88,13 +130,11 @@ public class ExamMenuFragment extends Fragment {
         index = ClassesMenuFragmentArgs.fromBundle(getArguments()).getIndex();
         loadDB();
         titleText = binding.editTitle;
-        timeText = binding.examTime;
-        dateText = binding.editDueDate;
         locText = binding.editLoc;
         if (index < examList.size()) {
             titleText.setText(examList.get(index).getTitle());
-            timeText.setText(examList.get(index).getTime());
-            dateText.setText(examList.get(index).getDate());
+            binding.timeInstructions.setText("EXAM TIME: " + examList.get(index).getTime());
+            binding.dateInstructions.setText("EXAM DATE: " + examList.get(index).getDate());
             locText.setText(examList.get(index).getLocation());
         }
         spinner = binding.classSpinner;
@@ -118,8 +158,8 @@ public class ExamMenuFragment extends Fragment {
 
     public void done() {
         String titleNameStr = titleText.getText().toString();
-        String dateTextStr = dateText.getText().toString();
-        String timeTextStr = timeText.getText().toString();
+        String dateTextStr = binding.dateInstructions.getText().toString().replace("EXAM DATE: ", "");
+        String timeTextStr = binding.timeInstructions.getText().toString().replace("EXAM TIME: ", "");
         String locTextStr = locText.getText().toString();
         String associatedCourseStr = "";
         boolean goodData = false;
@@ -147,7 +187,7 @@ public class ExamMenuFragment extends Fragment {
         } else {
             String message;
             if (!ManipulateData.validateDate(dateTextStr)) {
-                message = "Date must be mm/dd/yyyy format. ";
+                message = "Invalid date input.";
             } else if (!ManipulateData.validateTime(timeTextStr)) {
                 message = "Invalid time input.";
             } else if (titleNameStr.trim().isEmpty()) {

@@ -1,12 +1,14 @@
 package com.example.cs_2340_student_scheduler_app.ui.classes;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -27,13 +29,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ClassesMenuFragment extends Fragment {
 
     private FragmentClassesMenuBinding binding;
     private EditText courseName;
     private EditText instructName;
-    private EditText timeText;
     private EditText daysText;
     private EditText sectionText;
     private EditText locationText;
@@ -86,14 +88,13 @@ public class ClassesMenuFragment extends Fragment {
         loadDB();
         courseName = binding.editTextClassName;
         instructName = binding.editTextInstructorName;
-        timeText = binding.editTextTime;
         daysText = binding.editTextDays;
         sectionText = binding.editTextSection;
         locationText = binding.editTextLocation;
         roomText = binding.editTextRoom;
 
         if (index < classList.size()) {
-            timeText.setText(classList.get(index).getTime());
+            binding.textView2.setText("CLASS TIME: " + classList.get(index).getTime());
             instructName.setText(classList.get(index).getInstructor());
             courseName.setText(classList.get(index).getCourseName());
             daysText.setText(classList.get(index).getDays());
@@ -103,6 +104,25 @@ public class ClassesMenuFragment extends Fragment {
         }
 
 
+        binding.time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                binding.textView2.setText("CLASS TIME: " + hourOfDay + ":" + minute);
+
+                            }
+                        }, hour, minute, false);
+                timePickerDialog.show();
+            }
+        });
         binding.submitButt.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,7 +135,7 @@ public class ClassesMenuFragment extends Fragment {
     private void done() {
         String courseNameStr = courseName.getText().toString();
         String instructNameStr = instructName.getText().toString();
-        String timeTextStr = timeText.getText().toString();
+        String timeTextStr = binding.textView2.getText().toString().replace("CLASS TIME: ", "");
         String daysTextStr = daysText.getText().toString();
         String sectionTextStr = sectionText.getText().toString();
         String locationTextStr = locationText.getText().toString();
